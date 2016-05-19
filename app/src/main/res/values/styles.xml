@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="AppTheme.Base"/>
+
+    <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/light_green_700</item>
+        <item name="colorPrimaryDark">@color/light_green_900</item>
+        <item name="android:windowBackground">@color/grey_50</item>
+    </style>
+
+    <style name="Material_Headline">
+        <item name="android:textSize">@dimen/font_size_headline</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="Material_Title">
+        <item name="android:textSize">@dimen/font_size_title</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="Material_SubHeader">
+        <item name="android:textSize">@dimen/font_size_sub_header</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:alpha">0.87</item>
+    </style>
+
+    <style name="Material_Body1">
+        <item name="android:textSize">@dimen/font_size_body</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:alpha">0.54</item>
+    </style>
+
+    <style name="Button_Unactivate">
+        <item name="android:textColor">@color/green_200</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Button_Activate">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Keyboard_Text">
+        <item name="android:textSize">36sp</item>
+        <item name="android:textColor">@color/keyboard_text</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Ripple_Style">
+        <item name="rv_centered">true</item>
+        <item name="rv_rippleDuration">250</item>
+        <item name="rv_alpha">200</item>
+    </style>
+</resources>

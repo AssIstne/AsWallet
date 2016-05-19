@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".billdetail.BillDetailActivity"
+    >
+    <include layout="@layout/universal_toolbar" android:id="@+id/bill_detail_toolbar"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/bill_detail_list_category"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/bill_detail_toolbar"
+        android:alpha="0"
+        />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/bill_detail_toolbar"
+        >
+
+        <FrameLayout
+            android:id="@+id/bill_detail_frag_info"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            tools:layout="@layout/fragment_bill_info"
+            />
+        <FrameLayout
+            android:id="@+id/bill_detail_frag_keyboard"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            tools:layout="@layout/fragment_keyboard" />
+    </LinearLayout>
+</RelativeLayout>
