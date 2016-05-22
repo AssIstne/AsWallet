@@ -11,8 +11,9 @@ import android.widget.Button;
 
 import com.assistne.aswallet.R;
 import com.assistne.aswallet.component.KeyboardFragment;
-import com.assistne.aswallet.model.Bill;
-import com.assistne.aswallet.model.Category;
+import com.assistne.aswallet.database.bean.Category;
+import com.assistne.aswallet.model.BillModel;
+import com.assistne.aswallet.model.CategoryModel;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
@@ -25,7 +26,7 @@ import butterknife.ButterKnife;
  * Created by assistne on 15/12/24.
  */
 public class BillDetailActivity extends AppCompatActivity implements BillMvp.View, View.OnClickListener {
-    public static final String KEY_BILL = "KEY_BILL";
+    public static final String KEY_BILL_ID = "KEY_BILL_ID";
 
     @Bind(R.id.bill_detail_toolbar) Toolbar mToolbar;
     @Bind(R.id.toolbar_btn_cancel) Button mBtnCancel;
@@ -72,21 +73,21 @@ public class BillDetailActivity extends AppCompatActivity implements BillMvp.Vie
         mListCategory.setAdapter(mAdapter);
     }
 
-    private Bill getBillFromIntent() {
+    private BillModel getBillFromIntent() {
         Bundle bundle = getIntent().getExtras();
-        Bill bill = null;
-        if (bundle != null && bundle.containsKey(BillDetailActivity.KEY_BILL)) {
-            bill = bundle.getParcelable(BillDetailActivity.KEY_BILL);
+        BillModel bill = null;
+        if (bundle != null && bundle.containsKey(BillDetailActivity.KEY_BILL_ID)) {
+            int billId = bundle.getInt(BillDetailActivity.KEY_BILL_ID, -1);
+            bill = mPresenter.getBill(billId);
         }
         if (bill == null) {
-            bill = new Bill();
+            bill = new BillModel();
         }
-        Logger.d(bill.toString());
         return bill;
     }
 
     private void initBillInfoFragment() {
-        Bill bill = getBillFromIntent();
+        BillModel bill = getBillFromIntent();
         mBillInfoFragment = BillInfoFragment.newInstance(bill);
     }
 
@@ -195,12 +196,12 @@ public class BillDetailActivity extends AppCompatActivity implements BillMvp.Vie
     }
 
     @Override
-    public void showCategory(List<Category> categoryList) {
+    public void showCategory(List<CategoryModel> categoryList) {
         mAdapter.setData(categoryList);
     }
 
     @Override
-    public void selectCategory(Category category) {
+    public void selectCategory(CategoryModel category) {
 
     }
 }

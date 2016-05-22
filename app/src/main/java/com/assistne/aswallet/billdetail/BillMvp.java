@@ -1,7 +1,9 @@
 package com.assistne.aswallet.billdetail;
 
-import com.assistne.aswallet.model.Bill;
-import com.assistne.aswallet.model.Category;
+import com.assistne.aswallet.database.bean.Bill;
+import com.assistne.aswallet.database.bean.Category;
+import com.assistne.aswallet.model.BillModel;
+import com.assistne.aswallet.model.CategoryModel;
 
 import java.util.List;
 
@@ -11,13 +13,14 @@ import java.util.List;
 public class BillMvp {
     interface View {
         void exit();
-        void showCategory(List<Category> categoryList);
-        void selectCategory(Category category);
+        void showCategory(List<CategoryModel> categoryList);
+        void selectCategory(CategoryModel category);
     }
 
     interface Presenter {
-        void updateBill(Bill bill);
+        void updateBill(BillModel bill);
         void getCategory();
         void getCategory(int id);
+        BillModel getBill(int id);
     }
 }

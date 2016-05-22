@@ -6,4 +6,7 @@
 
     <string name="global_zero">0</string>
     <string name="global_CNY">CNY</string>
+
+    <string name="income">收入</string>
+    <string name="expense">支出</string>
 </resources>

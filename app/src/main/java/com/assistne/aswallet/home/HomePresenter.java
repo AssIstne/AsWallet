@@ -2,9 +2,11 @@ package com.assistne.aswallet.home;
 
 import android.support.annotation.NonNull;
 
-import com.assistne.aswallet.model.Bill;
-
-import org.litepal.crud.DataSupport;
+import com.assistne.aswallet.database.dao.BillDao;
+import com.assistne.aswallet.database.dao.BillDapImpl;
+import com.assistne.aswallet.database.bean.Bill;
+import com.assistne.aswallet.model.BillModel;
+import com.assistne.aswallet.model.ModelTool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +17,11 @@ import java.util.List;
 public class HomePresenter implements HomeMvp.Presenter {
 
     private HomeMvp.View mView;
-
+    private BillDao mBillDao;
 
     public HomePresenter(@NonNull HomeMvp.View homeActivity) {
         mView = homeActivity;
+        mBillDao = new BillDapImpl();
     }
 
     @Override
@@ -27,16 +30,16 @@ public class HomePresenter implements HomeMvp.Presenter {
     }
 
     @Override
-    public Bill getBill(int id) {
-        return DataSupport.find(Bill.class, id);
+    public BillModel getBill(int id) {
+        return ModelTool.convert(mBillDao.getBill(id));
     }
 
     @Override
     public void onResume() {
-        List<Bill> data = DataSupport
-                .limit(10)
-                .order("dateinmills desc")
-                .find(Bill.class);
-        mView.showBill(data);
+        List<BillModel> billModelList = new ArrayList<>();
+        for (Bill bill : mBillDao.getBillList(10)) {
+            billModelList.add(ModelTool.convert(bill));
+        }
+        mView.showBill(billModelList);
     }
 }

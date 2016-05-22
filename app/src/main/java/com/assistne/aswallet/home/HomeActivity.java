@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.assistne.aswallet.R;
 import com.assistne.aswallet.billdetail.BillDetailActivity;
-import com.assistne.aswallet.model.Bill;
+import com.assistne.aswallet.model.BillModel;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity implements HomeMvp.View {
             @Override
             public void onClick(int billId) {
                 Intent intent = new Intent(HomeActivity.this, BillDetailActivity.class);
-                intent.putExtra(BillDetailActivity.KEY_BILL, mPresenter.getBill(billId));
+                intent.putExtra(BillDetailActivity.KEY_BILL_ID, billId);
                 HomeActivity.this.startActivity(intent);
             }
         });
@@ -61,7 +61,7 @@ public class HomeActivity extends AppCompatActivity implements HomeMvp.View {
     }
 
     @Override
-    public void showBill(List<Bill> billList) {
+    public void showBill(List<BillModel> billList) {
         mAdapter.setData(billList);
     }
 

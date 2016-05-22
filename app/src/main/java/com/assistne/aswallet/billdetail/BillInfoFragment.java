@@ -13,8 +13,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.assistne.aswallet.R;
-import com.assistne.aswallet.model.Bill;
-import com.assistne.aswallet.model.Category;
+import com.assistne.aswallet.database.bean.Bill;
+import com.assistne.aswallet.database.bean.Category;
+import com.assistne.aswallet.model.BillModel;
 import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
@@ -25,7 +26,7 @@ import butterknife.ButterKnife;
  * Created by assistne on 16/2/20.
  */
 public class BillInfoFragment extends Fragment implements View.OnClickListener{
-    private static final String KEY_BILL = "KEY_BILL";
+    private static final String KEY_BILL = "KEY_BILL_ID";
 
     @Bind(R.id.bill_info_btn_income) Button mBtnIncome;
     @Bind(R.id.bill_info_btn_expense) Button mBtnExpense;
@@ -34,9 +35,9 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
     @Bind(R.id.bill_info_text_category) TextView mTextCategory;
     @Bind(R.id.bill_info_vg_category) ViewGroup mVGCategory;
 
-    private Bill mBill;
+    private BillModel mBill;
 
-    public static BillInfoFragment newInstance(@Nullable Bill bill) {
+    public static BillInfoFragment newInstance(BillModel bill) {
         BillInfoFragment fragment = new BillInfoFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(KEY_BILL, bill);
@@ -59,7 +60,7 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
             mBill = bundle.getParcelable(KEY_BILL);
         }
         if (mBill == null) {
-            mBill = new Bill();
+            mBill = new BillModel();
         }
         showBill(mBill);
         return root;
@@ -106,10 +107,10 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
         return mTextPrice.getText();
     }
 
-    private void showBill(@Nullable Bill bill) {
+    private void showBill(@Nullable BillModel bill) {
         if (bill != null) {
             mTextPrice.setText(String.valueOf(bill.getPrice()));
-            mTextCategory.setText(mBill.getCategory().getName());
+            mTextCategory.setText(mBill.getCategoryName());
             mEditTextDescription.setText(bill.getDescription());
             if (bill.getType() == Bill.TYPE_EXPENSE) {
                 setExpense();
@@ -119,14 +120,12 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    public Bill getBill() {
+    public BillModel getBill() {
         return mBill;
     }
 
     public void setCategory(@NonNull Category category) {
-        Logger.d(mBill.getCategory().toString());
-        Logger.d(category.toString());
-        mBill.setCategory(category);
+        mBill.setCategoryName(category.getName());
         mTextCategory.setText(category.getName());
     }
 

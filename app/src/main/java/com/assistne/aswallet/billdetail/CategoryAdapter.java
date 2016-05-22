@@ -8,7 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.assistne.aswallet.R;
-import com.assistne.aswallet.model.Category;
+import com.assistne.aswallet.database.bean.Category;
+import com.assistne.aswallet.model.CategoryModel;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -18,15 +19,15 @@ import java.util.List;
  * Created by assistne on 16/3/22.
  */
 public class CategoryAdapter extends RecyclerView.Adapter implements View.OnClickListener {
-    private List<Category> mData;
+    private List<CategoryModel> mData;
     private OnItemClickListener mListener;
 
     public CategoryAdapter() {
-        this(new ArrayList<Category>());
+        this(new ArrayList<CategoryModel>());
     }
 
-    public CategoryAdapter(List<Category> data) {
-        mData = data == null ? new ArrayList<Category>() : data;
+    public CategoryAdapter(List<CategoryModel> data) {
+        mData = data == null ? new ArrayList<CategoryModel>() : data;
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -36,14 +37,14 @@ public class CategoryAdapter extends RecyclerView.Adapter implements View.OnClic
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        Category category = mData.get(position);
+        CategoryModel category = mData.get(position);
         Logger.d(category.toString());
         Holder holder = (Holder)viewHolder;
         holder.root.setTag(category);
         holder.name.setText(category.getName());
     }
 
-    public void setData(List<Category> data) {
+    public void setData(List<CategoryModel> data) {
         if (data != null) {
             mData.clear();
             mData.addAll(data);

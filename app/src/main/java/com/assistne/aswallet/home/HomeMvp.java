@@ -1,7 +1,8 @@
 package com.assistne.aswallet.home;
 
 import com.assistne.aswallet.component.BaseMvp;
-import com.assistne.aswallet.model.Bill;
+import com.assistne.aswallet.database.bean.Bill;
+import com.assistne.aswallet.model.BillModel;
 
 import java.util.List;
 
@@ -10,12 +11,12 @@ import java.util.List;
  */
 public interface HomeMvp {
     interface View {
-        void showBill(List<Bill> billList);
+        void showBill(List<BillModel> billList);
         void removeBillFromList(int position);
     }
 
     interface Presenter extends BaseMvp.Presenter {
         void deleteBillFromDataBase();
-        Bill getBill(int id);
+        BillModel getBill(int id);
     }
 }
