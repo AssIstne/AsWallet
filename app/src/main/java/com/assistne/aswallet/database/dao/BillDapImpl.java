@@ -20,12 +20,23 @@ public class BillDapImpl implements BillDao {
     }
 
     @Override
+    public void updateBill(Bill billInput) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(billInput);
+        realm.commitTransaction();
+        realm.close();
+    }
+
+    @Override
     public List<Bill> getBillList(int count) {
         Realm realm = Realm.getDefaultInstance();
-        long startId = (realm.where(Bill.class).count() - count);
-        List<Bill> res = realm.where(Bill.class)
-                .greaterThanOrEqualTo(Bill.Structure.ID, startId)
-                .findAllSorted(Bill.Structure.DATE, Sort.DESCENDING);
+        List<Bill> res = realm.where(Bill.class).findAllSorted(Bill.Structure.ID, Sort.DESCENDING);
+        int size = res.size();
+        if (size > 10) {
+            res = realm.where(Bill.class).greaterThanOrEqualTo(Bill.Structure.ID, size - 10)
+                    .findAllSorted(Bill.Structure.ID, Sort.DESCENDING);
+        }
         realm.close();
         return res;
     }

@@ -3,6 +3,9 @@ package com.assistne.aswallet.model;
 import com.assistne.aswallet.database.bean.Bill;
 import com.assistne.aswallet.database.bean.Category;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by assistne on 16/5/21.
  */
@@ -27,5 +30,13 @@ public class ModelTool {
         bill.setDate(model.getDate());
         bill.setType(model.getType());
         return bill;
+    }
+
+    public static List<BillModel> convert(List<Bill> billList) {
+        List<BillModel> billModelList = new ArrayList<>();
+        for (int i = 0; i < billList.size(); i ++) {
+            billModelList.add(convert(billList.get(i)));
+        }
+        return billModelList;
     }
 }

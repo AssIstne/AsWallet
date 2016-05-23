@@ -78,7 +78,9 @@ public class BillDetailActivity extends AppCompatActivity implements BillMvp.Vie
         BillModel bill = null;
         if (bundle != null && bundle.containsKey(BillDetailActivity.KEY_BILL_ID)) {
             int billId = bundle.getInt(BillDetailActivity.KEY_BILL_ID, -1);
-            bill = mPresenter.getBill(billId);
+            if (billId > 0) {
+                bill = mPresenter.getBill(billId);
+            }
         }
         if (bill == null) {
             bill = new BillModel();

@@ -9,6 +9,7 @@ import java.util.Date;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Index;
+import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
 /**
@@ -28,7 +29,7 @@ public class Bill extends RealmObject {
         String PRICE = "price";
     }
 
-    @Index
+    @PrimaryKey
     private long id;
     private String description;
     private Category category;

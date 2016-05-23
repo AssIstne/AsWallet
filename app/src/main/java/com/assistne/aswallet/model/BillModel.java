@@ -19,6 +19,7 @@ public class BillModel implements Parcelable{
     private long id;
     private String description;
     private String categoryName;
+    private long categoryId;
     private Date date;
     private int type;
     private float price;
@@ -59,6 +60,14 @@ public class BillModel implements Parcelable{
         return type;
     }
 
+    public long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
+    }
+
     public int getTypeStringRes() {
         return (type == Bill.TYPE_INCOME ? R.string.income : R.string.expense);
     }
@@ -80,6 +89,7 @@ public class BillModel implements Parcelable{
         return super.toString() + "\n\tid   : " + id + "" +
                 "\n\tprice: " + price +
                 "\n\tcat  : " + categoryName +
+                "\n\tcatId: " + categoryId +
                 "\n\tdate : " + DateFormat.format("yyyy-MM-dd HH:mm:ss", date) +
                 "\n\ttype : " + (type == Bill.TYPE_INCOME ? "income" : "expense") +
                 "\n\tdes  : " + description ;
@@ -99,6 +109,7 @@ public class BillModel implements Parcelable{
         dest.writeSerializable(this.date);
         dest.writeInt(this.type);
         dest.writeFloat(this.price);
+        dest.writeLong(this.categoryId);
     }
 
     public BillModel() {
@@ -116,6 +127,7 @@ public class BillModel implements Parcelable{
         this.date = (Date) in.readSerializable();
         this.type = in.readInt();
         this.price = in.readFloat();
+        this.categoryId = in.readLong();
     }
 
     public static final Creator<BillModel> CREATOR = new Creator<BillModel>() {

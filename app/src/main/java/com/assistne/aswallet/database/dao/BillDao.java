@@ -10,5 +10,6 @@ import java.util.List;
  */
 public interface BillDao {
     Bill getBill(long id);
+    void updateBill(Bill billInput);
     List<Bill> getBillList(int count);
 }

@@ -4,6 +4,7 @@ import com.assistne.aswallet.database.PrimaryKeyFactory;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Index;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * 决定数据库的结构, 提供给{@link com.assistne.aswallet.database.dao.CategoryDao}使用
@@ -21,7 +22,7 @@ public class Category extends RealmObject {
         String ICON = "iconType";
     }
 
-    @Index
+    @PrimaryKey
     private long id;
     private String name;
     private int type;

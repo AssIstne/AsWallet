@@ -36,10 +36,6 @@ public class HomePresenter implements HomeMvp.Presenter {
 
     @Override
     public void onResume() {
-        List<BillModel> billModelList = new ArrayList<>();
-        for (Bill bill : mBillDao.getBillList(10)) {
-            billModelList.add(ModelTool.convert(bill));
-        }
-        mView.showBill(billModelList);
+        mView.showBill(ModelTool.convert(mBillDao.getBillList(10)));
     }
 }

@@ -20,7 +20,7 @@ public class BillMvp {
     interface Presenter {
         void updateBill(BillModel bill);
         void getCategory();
-        void getCategory(int id);
-        BillModel getBill(int id);
+        void getCategory(long id);
+        BillModel getBill(long id);
     }
 }
