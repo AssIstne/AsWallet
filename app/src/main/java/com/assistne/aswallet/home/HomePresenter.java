@@ -3,13 +3,9 @@ package com.assistne.aswallet.home;
 import android.support.annotation.NonNull;
 
 import com.assistne.aswallet.database.dao.BillDao;
-import com.assistne.aswallet.database.dao.BillDapImpl;
-import com.assistne.aswallet.database.bean.Bill;
+import com.assistne.aswallet.database.dao.BillDaoImpl;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.model.ModelTool;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by assistne on 15/12/24.
@@ -21,7 +17,7 @@ public class HomePresenter implements HomeMvp.Presenter {
 
     public HomePresenter(@NonNull HomeMvp.View homeActivity) {
         mView = homeActivity;
-        mBillDao = new BillDapImpl();
+        mBillDao = new BillDaoImpl();
     }
 
     @Override
@@ -36,6 +32,6 @@ public class HomePresenter implements HomeMvp.Presenter {
 
     @Override
     public void onResume() {
-        mView.showBill(ModelTool.convert(mBillDao.getBillList(10)));
+        mView.showBill(ModelTool.convertBillList(mBillDao.getBillList(10)));
     }
 }

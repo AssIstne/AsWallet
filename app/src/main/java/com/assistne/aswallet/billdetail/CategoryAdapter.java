@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.assistne.aswallet.R;
-import com.assistne.aswallet.database.bean.Category;
 import com.assistne.aswallet.model.CategoryModel;
 import com.orhanobut.logger.Logger;
 
@@ -60,8 +59,8 @@ public class CategoryAdapter extends RecyclerView.Adapter implements View.OnClic
     @Override
     public void onClick(View v) {
         Object tag = v.getTag();
-        if (mListener != null && tag != null && tag instanceof Category) {
-            mListener.onClick((Category)tag);
+        if (mListener != null && tag != null && tag instanceof CategoryModel) {
+            mListener.onClick((CategoryModel)tag);
         }
     }
 
@@ -84,6 +83,6 @@ public class CategoryAdapter extends RecyclerView.Adapter implements View.OnClic
     }
 
     public interface OnItemClickListener {
-        void onClick(Category category);
+        void onClick(CategoryModel category);
     }
 }

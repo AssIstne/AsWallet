@@ -1,19 +1,28 @@
 package com.assistne.aswallet.model;
 
+import android.support.annotation.NonNull;
+
+import com.assistne.aswallet.R;
 import com.assistne.aswallet.database.bean.Bill;
 import com.assistne.aswallet.database.bean.Category;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.assistne.aswallet.tools.PreCondition;
+
 /**
+ * 数据库类和视图展示类之间的转换工具
  * Created by assistne on 16/5/21.
  */
 public class ModelTool {
-    public static BillModel convert(Bill bill) {
+    public static BillModel convert(@NonNull Bill bill) {
         BillModel model = new BillModel();
         model.setId(bill.getId());
-        model.setCategoryName(bill.getCategory().getName());
+        Category category = bill.getCategory();
+        PreCondition.checkNotNull(category);
+        model.setCategoryName(category.getName());
+        model.setCategoryId(category.getId());
         model.setDescription(bill.getDescription());
         model.setPrice(bill.getPrice());
         model.setDate(bill.getDate());
@@ -21,7 +30,18 @@ public class ModelTool {
         return model;
     }
 
-    public static Bill convert(BillModel model, Category category) {
+    public static CategoryModel convert(@NonNull Category category) {
+        CategoryModel model = new CategoryModel();
+        model.setId(category.getId());
+        model.setName(category.getName());
+        model.setType(category.getType());
+        model.setActivate(category.isActivate());
+        // TODO: 16/5/24 映射图标
+        model.setIconRes(R.drawable.ic_local_dining_white_36dp);
+        return model;
+    }
+
+    public static Bill convert(@NonNull BillModel model, @NonNull Category category) {
         Bill bill = new Bill();
         bill.setId(model.getId());
         bill.setCategory(category);
@@ -32,11 +52,19 @@ public class ModelTool {
         return bill;
     }
 
-    public static List<BillModel> convert(List<Bill> billList) {
+    public static List<BillModel> convertBillList(@NonNull List<Bill> billList) {
         List<BillModel> billModelList = new ArrayList<>();
         for (int i = 0; i < billList.size(); i ++) {
             billModelList.add(convert(billList.get(i)));
         }
         return billModelList;
+    }
+
+    public static List<CategoryModel> convertCategoryList(@NonNull List<Category> categoryList) {
+        List<CategoryModel> res = new ArrayList<>();
+        for (Category category : categoryList) {
+            res.add(convert(category));
+        }
+        return res;
     }
 }

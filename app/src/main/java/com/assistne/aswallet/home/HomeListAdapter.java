@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.assistne.aswallet.R;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.tools.FormatUtils;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
     @Override
     public void onClick(View v) {
         if (mListener != null) {
-            mListener.onClick((Integer) v.getTag());
+            mListener.onClick((long) v.getTag());
         }
     }
 
@@ -59,7 +60,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
         this(null);
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
     public HomeListAdapter(List<BillModel> data) {
         mData = data == null ? new ArrayList<BillModel>() : data;
     }
@@ -70,18 +70,14 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
         notifyDataSetChanged();
     }
 
-    // Create new views (invoked by the layout manager)
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM) {
-            //inflate your layout and pass it to view holder
-            // create a new view
             final View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.list_item_bill, parent, false);
             ViewHolder vh = new ViewHolder(v, TYPE_ITEM);
             return vh;
         } else if (viewType == TYPE_HEADER) {
-            //inflate your layout and pass it to view holder
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.list_item_bill_header, parent, false);
             return new ViewHolder(v, TYPE_HEADER);
@@ -95,11 +91,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
         return position == 0 ? TYPE_HEADER : TYPE_ITEM;
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
         if (mData != null && holder.type == TYPE_ITEM) {
             BillModel bill = mData.get(position-1);
 //                TODO
@@ -111,7 +104,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
         }
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return mData.size() + 1;
@@ -122,6 +114,13 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
     }
 
     public interface ItemClickListener {
-        void onClick(int billId);
+        void onClick(long billId);
+    }
+
+    public void remove(int position) {
+        Logger.d("size : " + mData.size() + " position : " + position);
+        mData.get(position);
+        mData.remove(position);
+        notifyItemRemoved(position);
     }
 }

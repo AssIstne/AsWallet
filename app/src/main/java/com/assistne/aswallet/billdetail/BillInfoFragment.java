@@ -16,6 +16,7 @@ import com.assistne.aswallet.R;
 import com.assistne.aswallet.database.bean.Bill;
 import com.assistne.aswallet.database.bean.Category;
 import com.assistne.aswallet.model.BillModel;
+import com.assistne.aswallet.model.CategoryModel;
 import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
@@ -26,7 +27,7 @@ import butterknife.ButterKnife;
  * Created by assistne on 16/2/20.
  */
 public class BillInfoFragment extends Fragment implements View.OnClickListener{
-    private static final String KEY_BILL = "KEY_BILL_ID";
+    private static final String KEY_BILL_MODEL = "KEY_BILL_MODEL";
 
     @Bind(R.id.bill_info_btn_income) Button mBtnIncome;
     @Bind(R.id.bill_info_btn_expense) Button mBtnExpense;
@@ -35,12 +36,12 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
     @Bind(R.id.bill_info_text_category) TextView mTextCategory;
     @Bind(R.id.bill_info_vg_category) ViewGroup mVGCategory;
 
-    private BillModel mBill;
+    private BillModel mBillModel;
 
     public static BillInfoFragment newInstance(BillModel bill) {
         BillInfoFragment fragment = new BillInfoFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable(KEY_BILL, bill);
+        bundle.putParcelable(KEY_BILL_MODEL, bill);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -57,12 +58,12 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
         mVGCategory.setOnClickListener(this);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mBill = bundle.getParcelable(KEY_BILL);
+            mBillModel = bundle.getParcelable(KEY_BILL_MODEL);
         }
-        if (mBill == null) {
-            mBill = new BillModel();
+        if (mBillModel == null) {
+            mBillModel = new BillModel();
         }
-        showBill(mBill);
+        showBill(mBillModel);
         return root;
     }
 
@@ -70,11 +71,11 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bill_info_btn_expense:
-                mBill.setType(Bill.TYPE_EXPENSE);
+                mBillModel.setType(Bill.TYPE_EXPENSE);
                 setExpense();
                 break;
             case R.id.bill_info_btn_income:
-                mBill.setType(Bill.TYPE_INCOME);
+                mBillModel.setType(Bill.TYPE_INCOME);
                 setIncome();
                 break;
             case R.id.bill_info_vg_category:
@@ -100,7 +101,7 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
 
     public void setPriceText(String content) {
         mTextPrice.setText(content);
-        mBill.setPrice(Float.valueOf(content));
+        mBillModel.setPrice(Float.valueOf(content));
     }
 
     public CharSequence getPriceText() {
@@ -110,7 +111,7 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
     private void showBill(@Nullable BillModel bill) {
         if (bill != null) {
             mTextPrice.setText(String.valueOf(bill.getPrice()));
-            mTextCategory.setText(mBill.getCategoryName());
+            mTextCategory.setText(mBillModel.getCategoryName());
             mEditTextDescription.setText(bill.getDescription());
             if (bill.getType() == Bill.TYPE_EXPENSE) {
                 setExpense();
@@ -121,11 +122,15 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
     }
 
     public BillModel getBill() {
-        return mBill;
+        mBillModel.setDescription(mEditTextDescription.getText().toString());
+        Logger.d(mBillModel.toString());
+        return mBillModel;
     }
 
-    public void setCategory(@NonNull Category category) {
-        mBill.setCategoryName(category.getName());
+    public void setCategory(@NonNull CategoryModel category) {
+        Logger.d(category.toString());
+        mBillModel.setCategoryName(category.getName());
+        mBillModel.setCategoryId(category.getId());
         mTextCategory.setText(category.getName());
     }
 

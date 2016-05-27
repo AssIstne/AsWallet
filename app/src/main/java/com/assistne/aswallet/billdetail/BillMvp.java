@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by assistne on 16/5/19.
  */
-public class BillMvp {
+public interface BillMvp {
     interface View {
         void exit();
         void showCategory(List<CategoryModel> categoryList);
@@ -20,6 +20,9 @@ public class BillMvp {
     interface Presenter {
         void updateBill(BillModel bill);
         void getCategory();
+
+        CategoryModel getDefaultCategory();
+
         void getCategory(long id);
         BillModel getBill(long id);
     }

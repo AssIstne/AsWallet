@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.assistne.aswallet.R;
+import com.assistne.aswallet.component.BaseActivity;
 import com.assistne.aswallet.component.KeyboardFragment;
 import com.assistne.aswallet.database.bean.Category;
 import com.assistne.aswallet.model.BillModel;
@@ -25,7 +26,7 @@ import butterknife.ButterKnife;
  * Page to show details of a bill
  * Created by assistne on 15/12/24.
  */
-public class BillDetailActivity extends AppCompatActivity implements BillMvp.View, View.OnClickListener {
+public class BillDetailActivity extends BaseActivity implements BillMvp.View, View.OnClickListener {
     public static final String KEY_BILL_ID = "KEY_BILL_ID";
 
     @Bind(R.id.bill_detail_toolbar) Toolbar mToolbar;
@@ -64,7 +65,7 @@ public class BillDetailActivity extends AppCompatActivity implements BillMvp.Vie
         mAdapter = new CategoryAdapter();
         mAdapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
-            public void onClick(Category category) {
+            public void onClick(CategoryModel category) {
                 Logger.d(category.toString());
                 mBillInfoFragment.setCategory(category);
                 mBtnCancel.performClick();
@@ -77,14 +78,18 @@ public class BillDetailActivity extends AppCompatActivity implements BillMvp.Vie
         Bundle bundle = getIntent().getExtras();
         BillModel bill = null;
         if (bundle != null && bundle.containsKey(BillDetailActivity.KEY_BILL_ID)) {
-            int billId = bundle.getInt(BillDetailActivity.KEY_BILL_ID, -1);
+            long billId = bundle.getLong(BillDetailActivity.KEY_BILL_ID, -1);
             if (billId > 0) {
                 bill = mPresenter.getBill(billId);
             }
         }
         if (bill == null) {
             bill = new BillModel();
+            CategoryModel categoryModel = mPresenter.getDefaultCategory();
+            bill.setCategoryId(categoryModel.getId());
+            bill.setCategoryName(categoryModel.getName());
         }
+        Logger.d(bill.toString());
         return bill;
     }
 
@@ -150,7 +155,9 @@ public class BillDetailActivity extends AppCompatActivity implements BillMvp.Vie
                 .addToBackStack(null)
                 .commit();
         mListCategory.animate().alpha(1).setDuration(400);
+        Logger.d("size " + mAdapter.getItemCount());
         if (mAdapter.getItemCount() == 0) {
+            Logger.d("get cat");
             mPresenter.getCategory();
         }
     }

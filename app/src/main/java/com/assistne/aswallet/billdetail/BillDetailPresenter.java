@@ -1,12 +1,13 @@
 package com.assistne.aswallet.billdetail;
 
+import com.assistne.aswallet.database.PrimaryKeyFactory;
 import com.assistne.aswallet.database.bean.Bill;
-import com.assistne.aswallet.database.bean.Category;
 import com.assistne.aswallet.database.dao.BillDao;
-import com.assistne.aswallet.database.dao.BillDapImpl;
+import com.assistne.aswallet.database.dao.BillDaoImpl;
 import com.assistne.aswallet.database.dao.CategoryDao;
 import com.assistne.aswallet.database.dao.CategoryDaoImpl;
 import com.assistne.aswallet.model.BillModel;
+import com.assistne.aswallet.model.CategoryModel;
 import com.assistne.aswallet.model.ModelTool;
 import com.orhanobut.logger.Logger;
 
@@ -22,21 +23,31 @@ public class BillDetailPresenter implements BillMvp.Presenter{
 
     public BillDetailPresenter(BillMvp.View view) {
         mView = view;
-        mBillDao = new BillDapImpl();
+        mBillDao = new BillDaoImpl();
         mCategoryDao = new CategoryDaoImpl();
     }
 
     @Override
-    public void updateBill(BillModel bill) {
+    public void updateBill(BillModel billModel) {
+        Logger.d(billModel.toString());
+        long categoryId = billModel.getCategoryId();
+        Bill bill = ModelTool.convert(billModel, mCategoryDao.getCategory(categoryId));
+        if (bill.getId() == -1) {
+            bill.setId(PrimaryKeyFactory.nextBillKey());
+        }
         Logger.d(bill.toString());
-        long categoryId = bill.getCategoryId();
-        mBillDao.updateBill(ModelTool.convert(bill, mCategoryDao.getCategory(categoryId)));
+        mBillDao.updateBill(bill);
         mView.exit();
     }
 
     @Override
     public void getCategory() {
+        mView.showCategory(ModelTool.convertCategoryList(mCategoryDao.getCategoryList(0)));
+    }
 
+    @Override
+    public CategoryModel getDefaultCategory() {
+        return ModelTool.convert(mCategoryDao.getDefaultCategory());
     }
 
     @Override
