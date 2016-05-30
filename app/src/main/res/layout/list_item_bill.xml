@@ -2,7 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="72dp">
+    android:layout_height="72dp"
+    android:paddingLeft="@dimen/material_margin_16"
+    android:paddingStart="@dimen/material_margin_16"
+    android:paddingRight="@dimen/material_margin_16"
+    android:paddingEnd="@dimen/material_margin_16"
+    android:background="@drawable/list_item_ripple_bg"
+    >
 
     <ImageView
         android:id="@+id/list_item_img_icon"
@@ -16,8 +22,7 @@
         android:id="@+id/list_item_text_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="56dp"
-        android:layout_marginStart="56dp"
+        android:layout_marginStart="@dimen/text_margin_start"
         android:layout_alignTop="@id/list_item_img_icon"
         style="@style/Material_Body1"
         tools:text="10 minutes ago, 6:29 AM"
@@ -27,8 +32,7 @@
         android:id="@+id/list_item_text_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="56dp"
-        android:layout_marginStart="56dp"
+        android:layout_marginStart="@dimen/text_margin_start"
         android:layout_below="@id/list_item_text_date"
         style="@style/Material_SubHeader"
         android:maxLength="22"
@@ -39,7 +43,6 @@
         android:id="@+id/list_item_text_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignBaseline="@id/list_item_text_description"
         style="@style/Material_SubHeader"

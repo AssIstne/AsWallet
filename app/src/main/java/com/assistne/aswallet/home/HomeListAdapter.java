@@ -24,28 +24,20 @@ import butterknife.ButterKnife;
  */
 public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHolder> implements View.OnClickListener{
 
-    private static final int TYPE_HEADER = 0;
-    private static final int TYPE_ITEM = 1;
-
     private List<BillModel> mData;
     private ItemClickListener mListener;
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public int type;
         @Bind(R.id.list_item_img_icon) public ImageView imgIcon;
         @Bind(R.id.list_item_text_date) public TextView tvDate;
         @Bind(R.id.list_item_text_description) public TextView tvDescription;
         @Bind(R.id.list_item_text_price) public TextView tvPrice;
-        public ViewHolder(View v, int typeIn) {
+
+        public ViewHolder(View v) {
             super(v);
-            type = typeIn;
-            if (typeIn == TYPE_ITEM) {
-                ButterKnife.bind(this, v);
-                v.setOnClickListener(HomeListAdapter.this);
-            } else if (typeIn == TYPE_HEADER) {
-//                    v.setOnClickListener(null);
-            }
+            ButterKnife.bind(this, v);
+            v.setOnClickListener(HomeListAdapter.this);
         }
     }
 
@@ -72,29 +64,15 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == TYPE_ITEM) {
-            final View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.list_item_bill, parent, false);
-            ViewHolder vh = new ViewHolder(v, TYPE_ITEM);
-            return vh;
-        } else if (viewType == TYPE_HEADER) {
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.list_item_bill_header, parent, false);
-            return new ViewHolder(v, TYPE_HEADER);
-        }
-
-        throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
+        final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_bill, parent, false);
+        return new ViewHolder(v);
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return position == 0 ? TYPE_HEADER : TYPE_ITEM;
-    }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (mData != null && holder.type == TYPE_ITEM) {
-            BillModel bill = mData.get(position-1);
+        if (mData != null) {
+            BillModel bill = mData.get(position);
 //                TODO
             holder.imgIcon.setImageResource(R.drawable.ic_local_dining_white_36dp);
             holder.tvDate.setText(FormatUtils.dateToText(bill.getDate().getTime()));
@@ -106,7 +84,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return mData.size() + 1;
+        return mData.size();
     }
 
     public void setItemClickListener(ItemClickListener listener) {

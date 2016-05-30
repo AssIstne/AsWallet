@@ -2,14 +2,11 @@ package com.assistne.aswallet.home;
 
 import android.content.Intent;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -70,9 +67,15 @@ public class HomeActivity extends BaseActivity implements HomeMvp.View {
         mRecyclerView.setAdapter(mAdapter);
         // 增加底线
         mRecyclerView.addItemDecoration(
-                new DividerItemDecoration(getResources().getDrawable(R.drawable.list_divider_line)));
+                new DividerItemDecoration(getResources().getDrawable(R.drawable.list_divider_line, null)));
         setUpItemTouchHelper();
     }
+
+
+    /**
+     * 参考
+     * http://nemanjakovacevic.net/blog/english/2016/01/12/recyclerview-swipe-to-delete-no-3rd-party-lib-necessary/
+     * */
     private void setUpItemTouchHelper() {
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -85,9 +88,9 @@ public class HomeActivity extends BaseActivity implements HomeMvp.View {
             boolean initiated;
 
             private void init() {
-                background = new ColorDrawable(getResources().getColor(R.color.grey_300));
+                background = new ColorDrawable(getResources().getColor(R.color.grey_50));
                 xMark = ContextCompat.getDrawable(HomeActivity.this, R.drawable.ic_delete_black_36dp);
-                xMarkMargin = (int) HomeActivity.this.getResources().getDimension(R.dimen.activity_vertical_margin);
+                xMarkMargin = (int) HomeActivity.this.getResources().getDimension(R.dimen.material_margin_16);
                 initiated = true;
             }
 
@@ -110,14 +113,13 @@ public class HomeActivity extends BaseActivity implements HomeMvp.View {
                 adapter.remove(swipedPosition);
             }
 
+            // 多次调用
             @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                Log.d(TAG, "onChildDraw: dx is " + dX + " | state is " + actionState);
                 View itemView = viewHolder.itemView;
 
                 // not sure why, but this method get's called for viewholder that are already swiped away
                 if (viewHolder.getAdapterPosition() == -1) {
-                    Log.d(TAG, "onChildDraw: position is -1, over");
                     // not interested in those
                     return;
                 }
@@ -134,7 +136,6 @@ public class HomeActivity extends BaseActivity implements HomeMvp.View {
                 int itemHeight = itemView.getBottom() - itemView.getTop();
                 int intrinsicWidth = xMark.getIntrinsicWidth();
                 int intrinsicHeight = xMark.getIntrinsicWidth();
-
                 int xMarkLeft = itemView.getRight() - xMarkMargin - intrinsicWidth;
                 int xMarkRight = itemView.getRight() - xMarkMargin;
                 int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight)/2;
