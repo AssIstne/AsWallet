@@ -1,5 +1,6 @@
 package com.assistne.aswallet.model;
 
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
 import com.assistne.aswallet.R;
@@ -27,6 +28,7 @@ public class ModelTool {
         model.setPrice(bill.getPrice());
         model.setDate(bill.getDate());
         model.setType(bill.getType());
+        model.setCategoryIconRes(convertIconType(category.getIconType()));
         return model;
     }
 
@@ -37,7 +39,7 @@ public class ModelTool {
         model.setType(category.getType());
         model.setActivate(category.isActivate());
         // TODO: 16/5/24 映射图标
-        model.setIconRes(R.drawable.ic_local_dining_white_36dp);
+        model.setIconRes(convertIconType(category.getIconType()));
         return model;
     }
 
@@ -66,5 +68,10 @@ public class ModelTool {
             res.add(convert(category));
         }
         return res;
+    }
+
+    @DrawableRes
+    private static int convertIconType(int type) {
+        return R.drawable.ic_food;
     }
 }

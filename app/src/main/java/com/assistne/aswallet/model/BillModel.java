@@ -2,6 +2,7 @@ package com.assistne.aswallet.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.DrawableRes;
 import android.text.format.DateFormat;
 
 import com.assistne.aswallet.R;
@@ -20,6 +21,7 @@ public class BillModel implements Parcelable{
     private String description;
     private String categoryName;
     private long categoryId;
+    private int categoryIconRes;
     private Date date;
     private int type;
     private float price;
@@ -110,6 +112,7 @@ public class BillModel implements Parcelable{
         dest.writeInt(this.type);
         dest.writeFloat(this.price);
         dest.writeLong(this.categoryId);
+        dest.writeInt(this.categoryIconRes);
     }
 
     public BillModel() {
@@ -128,6 +131,7 @@ public class BillModel implements Parcelable{
         this.type = in.readInt();
         this.price = in.readFloat();
         this.categoryId = in.readLong();
+        this.categoryIconRes = in.readInt();
     }
 
     public static final Creator<BillModel> CREATOR = new Creator<BillModel>() {
@@ -141,4 +145,12 @@ public class BillModel implements Parcelable{
             return new BillModel[size];
         }
     };
+
+    public int getCategoryIconRes() {
+        return categoryIconRes;
+    }
+
+    public void setCategoryIconRes(int categoryIconRes) {
+        this.categoryIconRes = categoryIconRes;
+    }
 }

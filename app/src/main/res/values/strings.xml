@@ -1,12 +1,15 @@
 <resources>
-    <string name="app_name">AsWallet</string>
-    <string name="title_activity_home">AsWallet</string>
+    <string name="app_name">Wallet</string>
 
     <string name="home_list_header">\u0020LATEST SPENDS</string>
 
     <string name="global_zero">0</string>
     <string name="global_CNY">CNY</string>
+    <string name="global_CNY_ZH">%s 元</string>
 
     <string name="income">收入</string>
     <string name="expense">支出</string>
+
+    <string name="today">今天 %s</string>
+    <string name="yesterday">昨天 %s</string>
 </resources>

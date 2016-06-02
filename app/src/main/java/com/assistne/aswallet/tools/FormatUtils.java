@@ -1,5 +1,8 @@
 package com.assistne.aswallet.tools;
 
+import com.assistne.aswallet.R;
+import com.assistne.aswallet.component.MyApplication;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,10 +18,11 @@ public class FormatUtils {
 
 
     static {
-        HOUR_FORMAT = new SimpleDateFormat("h:mm a", Locale.US);
-        DATE_FORMAT = new SimpleDateFormat("MMM dd, yyyy h:mm a", Locale.US);
+        HOUR_FORMAT = new SimpleDateFormat("kk:mm", Locale.CHINA);
+        DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
     }
 
+    /** 把日期转换成显示在首页列表的时间文本 */
     public static String dateToText(long date) {
         String res;
         Calendar nowCalendar = Calendar.getInstance();
@@ -26,15 +30,14 @@ public class FormatUtils {
         Calendar targetCalendar = Calendar.getInstance();
         targetCalendar.setTimeInMillis(date);
         Date targetDate = targetCalendar.getTime();
-        if (delta < 3600000) {
-            res = (delta/60000 + 1) + " minutes ago, " + HOUR_FORMAT.format(targetDate);
-        } else if (delta < 10800000) {
-            res = delta/3600000 + " hours ago, " + HOUR_FORMAT.format(targetDate);
-        } else if (delta < 86400000 && targetCalendar.get(Calendar.DAY_OF_MONTH) == nowCalendar.get(Calendar.DAY_OF_MONTH)) {
-            res = "Today, " + HOUR_FORMAT.format(targetDate);
+        if (delta < 86400000 && targetCalendar.get(Calendar.DAY_OF_MONTH) == nowCalendar.get(Calendar.DAY_OF_MONTH)) {
+            // 一天内
+            res = String.format(MyApplication.getStaticContext().getString(R.string.today), HOUR_FORMAT.format(targetDate));
         } else if (delta < 172800000 && (nowCalendar.get(Calendar.DAY_OF_MONTH) - targetCalendar.get(Calendar.DAY_OF_MONTH)) == 1) {
-            res = "Yesterday, " + HOUR_FORMAT.format(targetDate);
+            // 昨天
+            res = String.format(MyApplication.getStaticContext().getString(R.string.yesterday), HOUR_FORMAT.format(targetDate));
         } else {
+            // 前天之前
             res = DATE_FORMAT.format(targetDate);
         }
 

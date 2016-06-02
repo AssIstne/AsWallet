@@ -1,6 +1,7 @@
 package com.assistne.aswallet.component;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.assistne.aswallet.database.PrimaryKeyFactory;
 import com.assistne.aswallet.database.bean.Category;
@@ -15,9 +16,14 @@ import io.realm.RealmConfiguration;
  */
 public class MyApplication extends Application {
 
+    private static Context mContext;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        if (mContext == null) {
+            mContext = this;
+        }
         Logger.init().logLevel(LogLevel.FULL).methodCount(1).hideThreadInfo();
         /** Realm暂时不支持自增主键, 需要自己弄id */
         Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this).name("AsWallet.realm").build());
@@ -79,5 +85,7 @@ public class MyApplication extends Application {
         realm.close();
     }
 
-
+    public static Context getStaticContext() {
+        return mContext;
+    }
 }
