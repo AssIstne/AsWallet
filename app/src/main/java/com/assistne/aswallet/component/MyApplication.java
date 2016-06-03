@@ -63,7 +63,7 @@ public class MyApplication extends Application {
             realm.beginTransaction();
             category = realm.createObject(Category.class);
             category.setId(PrimaryKeyFactory.nextCategoryKey());
-            category.setName("出行");
+            category.setName("旅行");
             category.setIconType(4);
             category.setActivate(true);
             realm.commitTransaction();
@@ -79,6 +79,13 @@ public class MyApplication extends Application {
             category.setId(PrimaryKeyFactory.nextCategoryKey());
             category.setName("社交");
             category.setIconType(6);
+            category.setActivate(true);
+            realm.commitTransaction();
+            realm.beginTransaction();
+            category = realm.createObject(Category.class);
+            category.setId(PrimaryKeyFactory.nextCategoryKey());
+            category.setName("购物");
+            category.setIconType(7);
             category.setActivate(true);
             realm.commitTransaction();
         }

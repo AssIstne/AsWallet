@@ -9,6 +9,7 @@
 
     <string name="income">收入</string>
     <string name="expense">支出</string>
+    <string name="type">类型</string>
 
     <string name="today">今天 %s</string>
     <string name="yesterday">昨天 %s</string>

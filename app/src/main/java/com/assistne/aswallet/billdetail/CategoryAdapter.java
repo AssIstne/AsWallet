@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.assistne.aswallet.R;
 import com.assistne.aswallet.model.CategoryModel;
+import com.assistne.aswallet.model.ModelTool;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class CategoryAdapter extends RecyclerView.Adapter implements View.OnClic
         Holder holder = (Holder)viewHolder;
         holder.root.setTag(category);
         holder.name.setText(category.getName());
+        holder.icon.setImageResource(category.getIconRes());
     }
 
     public void setData(List<CategoryModel> data) {

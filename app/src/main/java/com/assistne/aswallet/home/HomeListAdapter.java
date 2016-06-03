@@ -75,7 +75,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (mData != null) {
             BillModel bill = mData.get(position);
-//                TODO
             holder.imgIcon.setImageResource(bill.getCategoryIconRes());
             holder.tvDate.setText(FormatUtils.dateToText(bill.getDate().getTime()));
             holder.tvDescription.setText(TextUtils.isEmpty(bill.getDescription()) ? "Random" : bill.getDescription());
@@ -100,7 +99,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
     }
 
     public void remove(int position) {
-        Logger.d("size : " + mData.size() + " position : " + position);
         mData.get(position);
         mData.remove(position);
         notifyItemRemoved(position);

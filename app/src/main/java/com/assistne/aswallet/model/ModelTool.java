@@ -72,6 +72,23 @@ public class ModelTool {
 
     @DrawableRes
     private static int convertIconType(int type) {
-        return R.drawable.ic_food;
+        switch (type) {
+            case 0:
+                return R.drawable.ic_food;
+            case 1:
+                return R.drawable.ic_entertainment;
+            case 2:
+                return R.drawable.ic_hospital;
+            case 3:
+                return R.drawable.ic_education;
+            case 4:
+                return R.drawable.ic_travel;
+            case 5:
+                return R.drawable.ic_traffic;
+            case 6:
+                return R.drawable.ic_social;
+            default:
+                return R.drawable.ic_normal;
+        }
     }
 }

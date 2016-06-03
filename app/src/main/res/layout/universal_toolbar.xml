@@ -19,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/green_700"
+            android:background="@drawable/ripple_toolbar_btn_bg"
             style="?android:borderlessButtonStyle"
             android:text="@android:string/cancel"
             />
@@ -28,7 +28,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/green_700"
+            android:background="@drawable/ripple_toolbar_btn_bg"
             style="?android:borderlessButtonStyle"
             android:text="@android:string/ok"
             />

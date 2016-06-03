@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.assistne.aswallet.customview.SlideLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/green_500"
@@ -22,10 +24,9 @@
             android:id="@+id/bill_info_btn_income"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="收入"
+            android:text="@string/income"
             android:textSize="24sp"
             android:textColor="@color/selector_btn_text"
-            android:layout_toLeftOf="@id/bill_info_division"
             android:layout_toStartOf="@id/bill_info_division"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_alignBaseline="@id/bill_info_division"
@@ -35,10 +36,9 @@
             android:id="@+id/bill_info_btn_expense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="支出"
+            android:text="@string/expense"
             android:textSize="24sp"
             android:textColor="@color/selector_btn_text"
-            android:layout_toRightOf="@id/bill_info_division"
             android:layout_toEndOf="@id/bill_info_division"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_centerVertical="true"
@@ -57,7 +57,6 @@
             android:id="@+id/bill_info_text_currency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:text="@string/global_CNY"
@@ -70,9 +69,7 @@
             android:id="@+id/bill_info_text_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/bill_info_text_currency"
             android:layout_toStartOf="@id/bill_info_text_currency"
-            android:layout_marginRight="8dp"
             android:layout_marginEnd="8dp"
             android:layout_centerVertical="true"
             android:gravity="end|center_vertical"
@@ -104,9 +101,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/bill_info_division2"
             android:layout_toStartOf="@id/bill_info_division2"
-            android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:hint="Description"
             app:met_floatingLabel="normal"
@@ -120,26 +115,28 @@
             android:textSize="18sp"
             android:fontFamily="sans-serif-light"
             />
-        <com.andexert.library.RippleView
-            android:id="@+id/bill_info_vg_category"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/bill_info_division2"
             android:layout_toEndOf="@id/bill_info_division2"
-            android:layout_marginRight="16dp"
             android:layout_marginEnd="16dp"
-            style="@style/Ripple_Style"
-            >
+            android:background="@drawable/ripple_transparent_bg"
+            android:clickable="true">
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/bill_info_vg_category"
+                android:layout_width="72dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:background="@drawable/ripple_transparent_bg"
+                android:clickable="true"
+                >
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="类型"
+                    android:text="@string/type"
                     android:textSize="14sp"
                     android:textColor="@color/green_200"
                     android:fontFamily="sans-serif-light"
@@ -149,12 +146,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="餐饮"
+                    tools:text="餐饮"
                     android:textSize="18sp"
                     android:textColor="@android:color/white"
                     android:fontFamily="sans-serif-light"
                     />
             </LinearLayout>
-        </com.andexert.library.RippleView>
+        </FrameLayout>
     </RelativeLayout>
 </com.assistne.aswallet.customview.SlideLinearLayout>

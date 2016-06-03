@@ -7,7 +7,7 @@
     android:paddingEnd="@dimen/material_margin_16"
     android:paddingTop="@dimen/material_margin_16"
     android:paddingBottom="@dimen/material_margin_16"
-    android:background="@drawable/list_item_ripple_bg"
+    android:background="@drawable/ripple_list_item_bg"
     >
 
     <ImageView

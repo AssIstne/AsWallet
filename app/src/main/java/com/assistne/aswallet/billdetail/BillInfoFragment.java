@@ -1,6 +1,7 @@
 package com.assistne.aswallet.billdetail;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -52,6 +54,7 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
         View root = inflater.inflate(R.layout.fragment_bill_info, container, false);
         ButterKnife.bind(this, root);
 
+        root.setOnClickListener(this);
         mTextPrice.setMaxLines(1);
         mBtnExpense.setOnClickListener(this);
         mBtnIncome.setOnClickListener(this);
@@ -70,6 +73,9 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.root:
+                hideSoftKeyBoard();
+                break;
             case R.id.bill_info_btn_expense:
                 mBillModel.setType(Bill.TYPE_EXPENSE);
                 setExpense();
@@ -79,6 +85,7 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
                 setIncome();
                 break;
             case R.id.bill_info_vg_category:
+                hideSoftKeyBoard();
 //                TODO
                 ((BillDetailActivity)getActivity()).showCategoryList();
                 break;
@@ -134,4 +141,11 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
         mTextCategory.setText(category.getName());
     }
 
+    private void hideSoftKeyBoard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 }

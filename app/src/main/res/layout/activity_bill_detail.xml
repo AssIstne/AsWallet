@@ -19,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/bill_detail_toolbar"
+        android:clipToPadding="false"
         >
 
         <FrameLayout
@@ -26,6 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:elevation="2dp"
+            android:background="@color/green_500"
             tools:layout="@layout/fragment_bill_info"
             />
         <FrameLayout

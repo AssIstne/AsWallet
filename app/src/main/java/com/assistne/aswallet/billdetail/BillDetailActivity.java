@@ -1,5 +1,7 @@
 package com.assistne.aswallet.billdetail;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 
 import com.assistne.aswallet.R;
@@ -33,6 +37,7 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
     @Bind(R.id.toolbar_btn_cancel) Button mBtnCancel;
     @Bind(R.id.toolbar_btn_ok) Button mBtnOK;
     @Bind(R.id.bill_detail_list_category) RecyclerView mListCategory;
+    @Bind(R.id.bill_detail_frag_info) ViewGroup mInfoSpan;
 
     private CategoryAdapter mAdapter;
 
@@ -133,6 +138,8 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
             for (int i = 0; i < getFragmentManager().getBackStackEntryCount(); i++) {
                 getFragmentManager().popBackStack();
             }
+            /** 对应下面, 把背景色显示出来 */
+            mInfoSpan.animate().setDuration(400).setInterpolator(new AccelerateInterpolator()).translationY(0).start();
             mListCategory.animate().alpha(0).setDuration(400);
         } else {
             super.onBackPressed();
@@ -154,7 +161,10 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
                 .remove(mBillInfoFragment)
                 .addToBackStack(null)
                 .commit();
+
         mListCategory.animate().alpha(1).setDuration(400);
+        /** 这里是由于要产生阴影所以背景色不能是透明, 所以这里要手动把背景色跟着Fragment向上滑动 */
+        mInfoSpan.animate().setDuration(400).setInterpolator(new AccelerateInterpolator()).translationY(-mInfoSpan.getHeight()).start();
         Logger.d("size " + mAdapter.getItemCount());
         if (mAdapter.getItemCount() == 0) {
             Logger.d("get cat");

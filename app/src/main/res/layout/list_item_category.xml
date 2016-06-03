@@ -2,7 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="56dp">
+    android:layout_height="56dp"
+    android:paddingStart="@dimen/material_margin_16"
+    android:paddingEnd="@dimen/material_margin_16"
+    android:background="@drawable/ripple_list_item_bg"
+    >
 
     <ImageView
         android:id="@+id/list_item_category_icon"
@@ -16,6 +20,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:layout_marginStart="20dp"
         android:textColor="@android:color/black"
+        android:textSize="20sp"
+        tools:text="娱乐"
         />
 </LinearLayout>
