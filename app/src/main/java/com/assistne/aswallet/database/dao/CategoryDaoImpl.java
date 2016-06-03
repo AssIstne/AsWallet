@@ -2,7 +2,6 @@ package com.assistne.aswallet.database.dao;
 
 import com.assistne.aswallet.database.RealmDelegate;
 import com.assistne.aswallet.database.bean.Category;
-import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -20,9 +19,10 @@ public class CategoryDaoImpl implements CategoryDao {
     }
 
     @Override
-    public List<Category> getCategoryList(int count) {
+    public List<Category> getExpenseCategoryList(int count) {
         Realm realm = RealmDelegate.getInstance();
-        List<Category> res = realm.where(Category.class).findAllSorted(Category.Structure.ID, Sort.ASCENDING);
+        List<Category> res = realm.where(Category.class).equalTo(Category.Structure.TYPE, Category.TYPE_EXPENSE)
+                .findAllSorted(Category.Structure.ID, Sort.ASCENDING);
         if (count > 0) {
             int size = res.size();
             if (size > count) {
@@ -33,8 +33,12 @@ public class CategoryDaoImpl implements CategoryDao {
         return res;
     }
 
+    /** 包含账单最多的类别 */
     @Override
     public Category getDefaultCategory() {
-        return getCategoryList(0).get(0);
+        Realm realm = RealmDelegate.getInstance();
+        List<Category> res = realm.where(Category.class).equalTo(Category.Structure.TYPE, Category.TYPE_EXPENSE)
+                .findAllSorted(Category.Structure.COUNT, Sort.DESCENDING);
+        return res.get(0);
     }
 }

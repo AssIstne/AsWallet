@@ -20,6 +20,7 @@ public class Category extends RealmObject {
         String TYPE = "type";
         String ACTIVATE = "isActivate";
         String ICON = "iconType";
+        String COUNT = "count";
     }
 
     @PrimaryKey
@@ -28,6 +29,7 @@ public class Category extends RealmObject {
     private int type;
     private boolean isActivate;
     private int iconType;
+    private long count;
 
     public Category(){
         name = "undefine";
@@ -76,6 +78,14 @@ public class Category extends RealmObject {
         this.iconType = iconType;
     }
 
+    public long getCount() {
+        return count;
+    }
+
+    public void increaseCount() {
+        this.count += 1;
+    }
+
     @Override
     public String toString() {
         return super.toString() +
@@ -83,6 +93,7 @@ public class Category extends RealmObject {
                 "\n\tname :" + name +
                 "\n\tact  :" + isActivate +
                 "\n\ticon :" + iconType +
+                "\n\tcount :" + count +
                 "\n\ttype :" + (type == TYPE_INCOME ? "income" : "expense");
     }
 }

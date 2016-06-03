@@ -87,6 +87,8 @@ public class ModelTool {
                 return R.drawable.ic_traffic;
             case 6:
                 return R.drawable.ic_social;
+            case 8:
+                return R.drawable.ic_income;
             default:
                 return R.drawable.ic_normal;
         }

@@ -88,6 +88,14 @@ public class MyApplication extends Application {
             category.setIconType(7);
             category.setActivate(true);
             realm.commitTransaction();
+            realm.beginTransaction();
+            category = realm.createObject(Category.class);
+            category.setId(PrimaryKeyFactory.nextCategoryKey());
+            category.setName("收入");
+            category.setType(Category.TYPE_INCOME);
+            category.setIconType(8);
+            category.setActivate(true);
+            realm.commitTransaction();
         }
         realm.close();
     }

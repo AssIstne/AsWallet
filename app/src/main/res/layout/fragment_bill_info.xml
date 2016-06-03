@@ -120,9 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/bill_info_division2"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/ripple_transparent_bg"
-            android:clickable="true">
+            android:layout_marginEnd="16dp">
             <LinearLayout
                 android:id="@+id/bill_info_vg_category"
                 android:layout_width="72dp"

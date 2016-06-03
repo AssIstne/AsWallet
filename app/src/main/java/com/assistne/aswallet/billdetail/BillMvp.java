@@ -23,7 +23,7 @@ public interface BillMvp {
 
         CategoryModel getDefaultCategory();
 
-        void getCategory(long id);
+        CategoryModel getCategory(long id);
         BillModel getBill(long id);
     }
 }

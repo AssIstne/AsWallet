@@ -20,6 +20,7 @@ import com.assistne.aswallet.component.KeyboardFragment;
 import com.assistne.aswallet.database.bean.Category;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.model.CategoryModel;
+import com.assistne.aswallet.model.ModelTool;
 import com.assistne.aswallet.tools.FormatUtils;
 import com.orhanobut.logger.Logger;
 
@@ -128,6 +129,7 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
                 onBackPressed();
                 break;
             case R.id.toolbar_btn_ok:
+
                 mPresenter.updateBill(mBillInfoFragment.getBill());
                 break;
             default:
@@ -175,6 +177,16 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
         }
     }
 
+    public void chooseIncome() {
+        /** 9是默认里面的收入类别 */
+        mBillInfoFragment.setCategory(mPresenter.getCategory(9));
+    }
+
+    public void chooseExpense() {
+        /** 9是默认里面的收入类别 */
+        mBillInfoFragment.setCategory(mPresenter.getDefaultCategory());
+    }
+
     /** 长按, 仅处理删除按钮, 清空数字 */
     public boolean longClickKeyboard(int flag) {
         switch (flag) {
@@ -185,7 +197,7 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
                 return false;
         }
     }
-
+    /** 点击数字键盘 */
     public void clickKeyboard(int flag) {
         float priceF = FormatUtils.textToMoney(mBillInfoFragment.getPriceText().toString());
         Logger.d("原始值 " + priceF);

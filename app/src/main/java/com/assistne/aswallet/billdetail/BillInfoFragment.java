@@ -94,6 +94,8 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
         mBtnIncome.setTypeface(null, Typeface.BOLD);
         mBtnExpense.setActivated(false);
         mBtnIncome.setActivated(true);
+        ((BillDetailActivity)getActivity()).chooseIncome();
+        mVGCategory.setClickable(false);
     }
 
     private void setExpense(){
@@ -101,6 +103,9 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
         mBtnIncome.setTypeface(null, Typeface.NORMAL);
         mBtnIncome.setActivated(false);
         mBtnExpense.setActivated(true);
+
+        ((BillDetailActivity)getActivity()).chooseExpense();
+        mVGCategory.setClickable(true);
     }
 
     public void setPriceText(String content) {

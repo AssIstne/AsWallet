@@ -2,6 +2,7 @@ package com.assistne.aswallet.billdetail;
 
 import com.assistne.aswallet.database.PrimaryKeyFactory;
 import com.assistne.aswallet.database.bean.Bill;
+import com.assistne.aswallet.database.bean.Category;
 import com.assistne.aswallet.database.dao.BillDao;
 import com.assistne.aswallet.database.dao.BillDaoImpl;
 import com.assistne.aswallet.database.dao.CategoryDao;
@@ -10,6 +11,8 @@ import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.model.CategoryModel;
 import com.assistne.aswallet.model.ModelTool;
 import com.orhanobut.logger.Logger;
+
+import java.util.Date;
 
 
 /**
@@ -31,10 +34,15 @@ public class BillDetailPresenter implements BillMvp.Presenter{
     public void updateBill(BillModel billModel) {
         Logger.d(billModel.toString());
         long categoryId = billModel.getCategoryId();
-        Bill bill = ModelTool.convert(billModel, mCategoryDao.getCategory(categoryId));
+        Category category = mCategoryDao.getCategory(categoryId);
+        /** 手动计数 */
+        category.increaseCount();
+        Bill bill = ModelTool.convert(billModel, category);
         if (bill.getId() == -1) {
             bill.setId(PrimaryKeyFactory.nextBillKey());
         }
+        /** 记录保存时的时间 */
+        bill.setDate(new Date());
         Logger.d(bill.toString());
         mBillDao.updateBill(bill);
         mView.exit();
@@ -42,7 +50,7 @@ public class BillDetailPresenter implements BillMvp.Presenter{
 
     @Override
     public void getCategory() {
-        mView.showCategory(ModelTool.convertCategoryList(mCategoryDao.getCategoryList(0)));
+        mView.showCategory(ModelTool.convertCategoryList(mCategoryDao.getExpenseCategoryList(0)));
     }
 
     @Override
@@ -51,8 +59,8 @@ public class BillDetailPresenter implements BillMvp.Presenter{
     }
 
     @Override
-    public void getCategory(long id) {
-
+    public CategoryModel getCategory(long id) {
+        return ModelTool.convert(mCategoryDao.getCategory(id));
     }
 
     @Override

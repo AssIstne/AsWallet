@@ -12,7 +12,7 @@ public interface CategoryDao {
     Category getCategory(long id);
     /**
      * @param count 取出的数量, -1表示全部*/
-    List<Category> getCategoryList(int count);
+    List<Category> getExpenseCategoryList(int count);
 
     Category getDefaultCategory();
 }
