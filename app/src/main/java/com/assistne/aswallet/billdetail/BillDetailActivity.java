@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.assistne.aswallet.R;
 import com.assistne.aswallet.component.BaseActivity;
@@ -19,6 +20,7 @@ import com.assistne.aswallet.component.KeyboardFragment;
 import com.assistne.aswallet.database.bean.Category;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.model.CategoryModel;
+import com.assistne.aswallet.tools.FormatUtils;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
@@ -45,6 +47,8 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
     private BillInfoFragment mBillInfoFragment;
 
     private BillMvp.Presenter mPresenter;
+    /** 标记键盘输入小数点状态 */
+    private boolean mKeyBoardDotFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +75,6 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
         mAdapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onClick(CategoryModel category) {
-                Logger.d(category.toString());
                 mBillInfoFragment.setCategory(category);
                 mBtnCancel.performClick();
             }
@@ -172,6 +175,7 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
         }
     }
 
+    /** 长按, 仅处理删除按钮, 清空数字 */
     public boolean longClickKeyboard(int flag) {
         switch (flag) {
             case KeyboardFragment.Flag.OPR_DEL:
@@ -181,32 +185,42 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
                 return false;
         }
     }
+
     public void clickKeyboard(int flag) {
-        CharSequence currentPrice = mBillInfoFragment.getPriceText();
-        String result;
-        if (KeyboardFragment.Flag.NUM_ZERO <= flag && flag <= KeyboardFragment.Flag.NUM_NINE) {
-            try {
-                result = String.valueOf(Float.valueOf(currentPrice.toString()) * 10 + flag);
-            } catch (NumberFormatException e) {
-                result = currentPrice.toString() + flag;
+        float priceF = FormatUtils.textToMoney(mBillInfoFragment.getPriceText().toString());
+        Logger.d("原始值 " + priceF);
+        if (priceF < 1000000) {// 可以输入的最大数值
+            if (KeyboardFragment.Flag.NUM_ZERO <= flag && flag <= KeyboardFragment.Flag.NUM_NINE) {
+                /** 数字 */
+                if (mKeyBoardDotFlag) {// 小数点处于激活状态, 覆盖小数点后一位
+                    priceF = (int)priceF + ((float)flag/10);
+                    Logger.d("增加小数 " + priceF);
+                } else {
+                    priceF = priceF * 10 + flag;
+                    Logger.d("增加个位数 " + priceF);
+                }
+            } else {
+                /** 小数点或者删除 */
+                switch (flag) {
+                    case KeyboardFragment.Flag.OPR_DEL:// 删除
+                        mKeyBoardDotFlag = false;
+                        if (priceF - (int)priceF > 0) {// 有小数位清除小数位
+                            priceF = (float) Math.floor(priceF);
+                            Logger.d("清除小数 " + priceF);
+                        } else {// 没有小数位直接清除个位
+                            priceF = (int)priceF/10;
+                            Logger.d("清除个位 " + priceF);
+                        }
+                        break;
+                    default:// 小数点
+                        mKeyBoardDotFlag = true;
+                }
             }
+            Logger.d("final " + priceF + "  => " + FormatUtils.moneyText(priceF));
+            mBillInfoFragment.setPriceText(FormatUtils.moneyText(priceF));
         } else {
-            switch (flag) {
-                case KeyboardFragment.Flag.OPR_DIV:
-                    result = "0";
-                    break;
-                case KeyboardFragment.Flag.OPR_DEL:
-                    if (currentPrice.length() <= 1) {
-                        result = "0";
-                    } else {
-                        result = currentPrice.subSequence(0, currentPrice.length() - 1).toString();
-                    }
-                    break;
-                default:
-                    result = "0";
-            }
+            Toast.makeText(BillDetailActivity.this, R.string.overflow_msg, Toast.LENGTH_SHORT).show();
         }
-        mBillInfoFragment.setPriceText(result);
     }
 
     @Override

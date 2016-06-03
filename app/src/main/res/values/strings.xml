@@ -6,6 +6,7 @@
     <string name="global_zero">0</string>
     <string name="global_CNY">CNY</string>
     <string name="global_CNY_ZH">%s 元</string>
+    <string name="income_money">+ %s 元</string>
 
     <string name="income">收入</string>
     <string name="expense">支出</string>
@@ -13,4 +14,6 @@
 
     <string name="today">今天 %s</string>
     <string name="yesterday">昨天 %s</string>
+
+    <string name="overflow_msg">不能再多了~土豪!我们做朋友吧!（¯﹃¯）口水</string>
 </resources>

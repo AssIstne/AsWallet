@@ -9,64 +9,8 @@
 
     <GridView
         android:id="@+id/keyboard_grid_numbers"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="4"
         android:numColumns="3"
         />
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:background="@color/keyboard_side_bg"
-        >
-
-        <Button
-            android:id="@+id/keyboard_div"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="/"
-            android:background="@android:color/transparent"
-            style="@style/Keyboard_Text"
-            />
-        <Button
-            android:id="@+id/keyboard_mul"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="*"
-            android:background="@android:color/transparent"
-            style="@style/Keyboard_Text"
-            />
-        <Button
-            android:id="@+id/keyboard_sub"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="-"
-            android:background="@android:color/transparent"
-            style="@style/Keyboard_Text"
-            />
-        <Button
-            android:id="@+id/keyboard_plu"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="+"
-            android:background="@android:color/transparent"
-            style="@style/Keyboard_Text"
-            />
-        <Button
-            android:id="@+id/keyboard_equ"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="="
-            android:background="@android:color/transparent"
-            style="@style/Keyboard_Text"
-            />
-    </LinearLayout>
 </com.assistne.aswallet.customview.SlideLinearLayout>

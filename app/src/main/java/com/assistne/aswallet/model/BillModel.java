@@ -86,6 +86,10 @@ public class BillModel implements Parcelable{
         this.price = price;
     }
 
+    public boolean isIncome() {
+        return type == Bill.TYPE_INCOME;
+    }
+
     @Override
     public String toString() {
         return super.toString() + "\n\tid   : " + id + "" +

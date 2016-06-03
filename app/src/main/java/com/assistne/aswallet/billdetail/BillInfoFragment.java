@@ -19,6 +19,7 @@ import com.assistne.aswallet.database.bean.Bill;
 import com.assistne.aswallet.database.bean.Category;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.model.CategoryModel;
+import com.assistne.aswallet.tools.FormatUtils;
 import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
@@ -72,10 +73,8 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
+        hideSoftKeyBoard();
         switch (v.getId()) {
-            case R.id.root:
-                hideSoftKeyBoard();
-                break;
             case R.id.bill_info_btn_expense:
                 mBillModel.setType(Bill.TYPE_EXPENSE);
                 setExpense();
@@ -85,8 +84,6 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
                 setIncome();
                 break;
             case R.id.bill_info_vg_category:
-                hideSoftKeyBoard();
-//                TODO
                 ((BillDetailActivity)getActivity()).showCategoryList();
                 break;
         }
@@ -108,7 +105,7 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
 
     public void setPriceText(String content) {
         mTextPrice.setText(content);
-        mBillModel.setPrice(Float.valueOf(content));
+        mBillModel.setPrice(FormatUtils.textToMoney(content));
     }
 
     public CharSequence getPriceText() {
@@ -117,10 +114,10 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
 
     private void showBill(@Nullable BillModel bill) {
         if (bill != null) {
-            mTextPrice.setText(String.valueOf(bill.getPrice()));
+            mTextPrice.setText(FormatUtils.moneyText(bill.getPrice()));
             mTextCategory.setText(mBillModel.getCategoryName());
             mEditTextDescription.setText(bill.getDescription());
-            if (bill.getType() == Bill.TYPE_EXPENSE) {
+            if (!bill.isIncome()) {
                 setExpense();
             } else {
                 setIncome();
@@ -130,7 +127,6 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
 
     public BillModel getBill() {
         mBillModel.setDescription(mEditTextDescription.getText().toString());
-        Logger.d(mBillModel.toString());
         return mBillModel;
     }
 

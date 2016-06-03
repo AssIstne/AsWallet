@@ -10,8 +10,10 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.assistne.aswallet.R;
+import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,22 +41,12 @@ public class KeyboardFragment extends Fragment implements
         int NUM_SEVEN = 7;
         int NUM_EIGHT = 8;
         int NUM_NINE = 9;
-//        flags for operators
-        int OPR_DIV = 12;
-        int OPR_MUL = 13;
-        int OPR_SUB = 14;
-        int OPR_PLU = 15;
-        int OPR_EQU = 16;
+
         int OPR_DOT = 10;
         int OPR_DEL = 11;
     }
 
     @Bind(R.id.keyboard_grid_numbers) GridView mGVNumbers;
-    @Bind(R.id.keyboard_div) Button mBtnDiv;
-    @Bind(R.id.keyboard_mul) Button mBtnMul;
-    @Bind(R.id.keyboard_sub) Button mBtnSub;
-    @Bind(R.id.keyboard_plu) Button mBtnPlu;
-    @Bind(R.id.keyboard_equ) Button mBtnEqu;
 
     private ItemClickListener mCallback;
 
@@ -63,17 +55,6 @@ public class KeyboardFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_keyboard, container, false);
         ButterKnife.bind(this, root);
-
-        mBtnDiv.setOnClickListener(this);
-        mBtnDiv.setTag(Flag.OPR_DIV);
-        mBtnMul.setOnClickListener(this);
-        mBtnMul.setTag(Flag.OPR_MUL);
-        mBtnSub.setOnClickListener(this);
-        mBtnSub.setTag(Flag.OPR_SUB);
-        mBtnPlu.setOnClickListener(this);
-        mBtnPlu.setTag(Flag.OPR_PLU);
-        mBtnEqu.setOnClickListener(this);
-        mBtnEqu.setTag(Flag.OPR_EQU);
 
         mGVNumbers.setAdapter(new NumberAdapter());
         mGVNumbers.setOnItemClickListener(this);
@@ -136,8 +117,8 @@ public class KeyboardFragment extends Fragment implements
                 view = LayoutInflater.from(getActivity())
                         .inflate(R.layout.grid_item_keyboard, parent, false);
             }
-//            adjust the height of row to 1/4 keyboard height
-            Button button = (Button) view.findViewById(R.id.button);
+            // 根据父控件的高度动态计算每行的高度
+            TextView button = (TextView) view.findViewById(R.id.button);
             if (rowHeight == 0) {
                 rowHeight = parent.getHeight() / 4;
             }
@@ -149,7 +130,7 @@ public class KeyboardFragment extends Fragment implements
                     view.setTag(Flag.OPR_DOT);
                     break;
                 case 11:
-                    button.setText("<-");
+                    button.setText("Del");
                     view.setTag(Flag.OPR_DEL);
                     break;
                 case 0:

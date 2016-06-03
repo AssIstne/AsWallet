@@ -48,10 +48,4 @@
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:gravity">center</item>
     </style>
-
-    <style name="Ripple_Style">
-        <item name="rv_centered">true</item>
-        <item name="rv_rippleDuration">250</item>
-        <item name="rv_alpha">200</item>
-    </style>
 </resources>

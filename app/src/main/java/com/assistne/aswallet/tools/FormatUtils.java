@@ -43,4 +43,20 @@ public class FormatUtils {
 
         return res;
     }
+
+    public static String moneyText(float price) {
+        if (price - Math.floor(price) > 0) {
+            return String.format(Locale.CHINA, "%,.1f", price);
+        } else {
+            return String.format(Locale.CHINA, "%,d", (int)price);
+        }
+    }
+
+    public static float textToMoney(String price) {
+        try {
+            return Float.valueOf(price.replace(",", ""));
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
 }
