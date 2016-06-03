@@ -15,4 +15,5 @@ public interface CategoryDao {
     List<Category> getExpenseCategoryList(int count);
 
     Category getDefaultCategory();
+    Category increaseCategory(long id);
 }

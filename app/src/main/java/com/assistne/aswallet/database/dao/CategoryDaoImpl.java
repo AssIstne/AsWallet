@@ -41,4 +41,15 @@ public class CategoryDaoImpl implements CategoryDao {
                 .findAllSorted(Category.Structure.COUNT, Sort.DESCENDING);
         return res.get(0);
     }
+
+    /** 增加账单数量 */
+    @Override
+    public Category increaseCategory(long id) {
+        Realm realm = RealmDelegate.getInstance();
+        realm.beginTransaction();
+        Category category = realm.where(Category.class).equalTo(Category.Structure.ID, id).findFirst();
+        category.increaseCount();
+        realm.commitTransaction();
+        return category;
+    }
 }

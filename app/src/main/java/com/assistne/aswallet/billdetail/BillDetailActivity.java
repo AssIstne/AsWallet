@@ -129,7 +129,6 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
                 onBackPressed();
                 break;
             case R.id.toolbar_btn_ok:
-
                 mPresenter.updateBill(mBillInfoFragment.getBill());
                 break;
             default:
@@ -200,16 +199,13 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
     /** 点击数字键盘 */
     public void clickKeyboard(int flag) {
         float priceF = FormatUtils.textToMoney(mBillInfoFragment.getPriceText().toString());
-        Logger.d("原始值 " + priceF);
         if (priceF < 1000000) {// 可以输入的最大数值
             if (KeyboardFragment.Flag.NUM_ZERO <= flag && flag <= KeyboardFragment.Flag.NUM_NINE) {
                 /** 数字 */
                 if (mKeyBoardDotFlag) {// 小数点处于激活状态, 覆盖小数点后一位
                     priceF = (int)priceF + ((float)flag/10);
-                    Logger.d("增加小数 " + priceF);
                 } else {
                     priceF = priceF * 10 + flag;
-                    Logger.d("增加个位数 " + priceF);
                 }
             } else {
                 /** 小数点或者删除 */
@@ -218,17 +214,14 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
                         mKeyBoardDotFlag = false;
                         if (priceF - (int)priceF > 0) {// 有小数位清除小数位
                             priceF = (float) Math.floor(priceF);
-                            Logger.d("清除小数 " + priceF);
                         } else {// 没有小数位直接清除个位
                             priceF = (int)priceF/10;
-                            Logger.d("清除个位 " + priceF);
                         }
                         break;
                     default:// 小数点
                         mKeyBoardDotFlag = true;
                 }
             }
-            Logger.d("final " + priceF + "  => " + FormatUtils.moneyText(priceF));
             mBillInfoFragment.setPriceText(FormatUtils.moneyText(priceF));
         } else {
             Toast.makeText(BillDetailActivity.this, R.string.overflow_msg, Toast.LENGTH_SHORT).show();

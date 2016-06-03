@@ -78,10 +78,14 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
             case R.id.bill_info_btn_expense:
                 mBillModel.setType(Bill.TYPE_EXPENSE);
                 setExpense();
+                ((BillDetailActivity)getActivity()).chooseExpense();
+                mVGCategory.setClickable(true);
                 break;
             case R.id.bill_info_btn_income:
                 mBillModel.setType(Bill.TYPE_INCOME);
                 setIncome();
+                ((BillDetailActivity)getActivity()).chooseIncome();
+                mVGCategory.setClickable(false);
                 break;
             case R.id.bill_info_vg_category:
                 ((BillDetailActivity)getActivity()).showCategoryList();
@@ -94,8 +98,6 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
         mBtnIncome.setTypeface(null, Typeface.BOLD);
         mBtnExpense.setActivated(false);
         mBtnIncome.setActivated(true);
-        ((BillDetailActivity)getActivity()).chooseIncome();
-        mVGCategory.setClickable(false);
     }
 
     private void setExpense(){
@@ -103,9 +105,6 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener{
         mBtnIncome.setTypeface(null, Typeface.NORMAL);
         mBtnIncome.setActivated(false);
         mBtnExpense.setActivated(true);
-
-        ((BillDetailActivity)getActivity()).chooseExpense();
-        mVGCategory.setClickable(true);
     }
 
     public void setPriceText(String content) {

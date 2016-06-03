@@ -24,13 +24,13 @@ public class MyApplication extends Application {
         if (mContext == null) {
             mContext = this;
         }
-        Logger.init().logLevel(LogLevel.FULL).methodCount(1).hideThreadInfo();
+        Logger.init().logLevel(LogLevel.FULL).methodCount(4).hideThreadInfo();
         /** Realm暂时不支持自增主键, 需要自己弄id */
         Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this).name("AsWallet.realm").build());
         Realm realm = Realm.getDefaultInstance();
         PrimaryKeyFactory.getInstance().initialize(realm);
 
-        // TODO: 16/5/19 测试用
+        /** 创建默认类别 */
         if (realm.where(Category.class).count() == 0) {
             realm.beginTransaction();
             Category category = realm.createObject(Category.class);

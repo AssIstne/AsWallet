@@ -34,9 +34,8 @@ public class BillDetailPresenter implements BillMvp.Presenter{
     public void updateBill(BillModel billModel) {
         Logger.d(billModel.toString());
         long categoryId = billModel.getCategoryId();
-        Category category = mCategoryDao.getCategory(categoryId);
         /** 手动计数 */
-        category.increaseCount();
+        Category category = mCategoryDao.increaseCategory(categoryId);
         Bill bill = ModelTool.convert(billModel, category);
         if (bill.getId() == -1) {
             bill.setId(PrimaryKeyFactory.nextBillKey());
