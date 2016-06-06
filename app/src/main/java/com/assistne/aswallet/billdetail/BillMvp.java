@@ -4,6 +4,7 @@ import com.assistne.aswallet.database.bean.Bill;
 import com.assistne.aswallet.database.bean.Category;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.model.CategoryModel;
+import com.assistne.aswallet.model.TagModel;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ public interface BillMvp {
         void exit();
         void showCategory(List<CategoryModel> categoryList);
         void selectCategory(CategoryModel category);
+        void showTag(List<TagModel> tagList);
     }
 
     interface Presenter {
@@ -25,5 +27,7 @@ public interface BillMvp {
 
         CategoryModel getCategory(long id);
         BillModel getBill(long id);
+
+        void getTag();
     }
 }

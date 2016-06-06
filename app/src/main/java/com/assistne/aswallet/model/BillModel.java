@@ -2,7 +2,6 @@ package com.assistne.aswallet.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.DrawableRes;
 import android.text.format.DateFormat;
 
 import com.assistne.aswallet.R;
@@ -22,6 +21,8 @@ public class BillModel implements Parcelable{
     private String categoryName;
     private long categoryId;
     private int categoryIconRes;
+    private long tagId;
+    private String tagName;
     private Date date;
     private int type;
     private float price;
@@ -90,15 +91,48 @@ public class BillModel implements Parcelable{
         return type == Bill.TYPE_INCOME;
     }
 
+    public String getTagName() {
+        return tagName;
+    }
+
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
+
+    public long getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(long tagId) {
+        this.tagId = tagId;
+    }
+
     @Override
     public String toString() {
         return super.toString() + "\n\tid   : " + id + "" +
                 "\n\tprice: " + price +
                 "\n\tcat  : " + categoryName +
                 "\n\tcatId: " + categoryId +
-                "\n\tdate : " + DateFormat.format("yyyy-MM-dd HH:mm:ss", date) +
+                "\n\ttag  : " + tagName +
+                "\n\ttagId: " + tagId +
+                "\n\tdate : " + (date == null ? "no date" : DateFormat.format("yyyy-MM-dd HH:mm:ss", date)) +
                 "\n\ttype : " + (type == Bill.TYPE_INCOME ? "income" : "expense") +
                 "\n\tdes  : " + description ;
+    }
+
+
+    public BillModel() {
+        id = -1;
+        description = "";
+        type = Bill.TYPE_EXPENSE;
+    }
+
+    public int getCategoryIconRes() {
+        return categoryIconRes;
+    }
+
+    public void setCategoryIconRes(int categoryIconRes) {
+        this.categoryIconRes = categoryIconRes;
     }
 
 
@@ -112,30 +146,27 @@ public class BillModel implements Parcelable{
         dest.writeLong(this.id);
         dest.writeString(this.description);
         dest.writeString(this.categoryName);
-        dest.writeSerializable(this.date);
-        dest.writeInt(this.type);
-        dest.writeFloat(this.price);
         dest.writeLong(this.categoryId);
         dest.writeInt(this.categoryIconRes);
-    }
-
-    public BillModel() {
-        id = -1;
-        description = "";
-        type = Bill.TYPE_EXPENSE;
-        // TODO: 16/5/22 应该是点击保存的时候的时间
-        date = new Date();
+        dest.writeLong(this.tagId);
+        dest.writeString(this.tagName);
+        dest.writeLong(date != null ? date.getTime() : -1);
+        dest.writeInt(this.type);
+        dest.writeFloat(this.price);
     }
 
     protected BillModel(Parcel in) {
         this.id = in.readLong();
         this.description = in.readString();
         this.categoryName = in.readString();
-        this.date = (Date) in.readSerializable();
-        this.type = in.readInt();
-        this.price = in.readFloat();
         this.categoryId = in.readLong();
         this.categoryIconRes = in.readInt();
+        this.tagId = in.readLong();
+        this.tagName = in.readString();
+        long tmpDate = in.readLong();
+        this.date = tmpDate == -1 ? null : new Date(tmpDate);
+        this.type = in.readInt();
+        this.price = in.readFloat();
     }
 
     public static final Creator<BillModel> CREATOR = new Creator<BillModel>() {
@@ -149,12 +180,4 @@ public class BillModel implements Parcelable{
             return new BillModel[size];
         }
     };
-
-    public int getCategoryIconRes() {
-        return categoryIconRes;
-    }
-
-    public void setCategoryIconRes(int categoryIconRes) {
-        this.categoryIconRes = categoryIconRes;
-    }
 }

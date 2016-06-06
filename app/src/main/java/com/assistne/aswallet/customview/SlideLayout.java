@@ -3,22 +3,23 @@ package com.assistne.aswallet.customview;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 /**
  * Created by assistne on 16/1/6.
  */
-public class SlideLinearLayout extends LinearLayout {
+public class SlideLayout extends LinearLayout {
     private int mParentHeight;
-    public SlideLinearLayout(Context context) {
+    public SlideLayout(Context context) {
         super(context);
     }
 
-    public SlideLinearLayout(Context context, AttributeSet attrs) {
+    public SlideLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public SlideLinearLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SlideLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

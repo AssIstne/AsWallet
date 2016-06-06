@@ -23,6 +23,18 @@ public class Category extends RealmObject {
         String COUNT = "count";
     }
 
+    public interface Type {
+        int INCOME = 1;
+        int FOOD = 2;
+        int ENTERTAINMENT = 3;
+        int HOSPITAL = 4;
+        int EDUCATION = 5;
+        int TRAVEL = 6;
+        int TRAFFIC = 7;
+        int SOCIAL = 8;
+        int SHOPPING = 9;
+    }
+
     @PrimaryKey
     private long id;
     private String name;

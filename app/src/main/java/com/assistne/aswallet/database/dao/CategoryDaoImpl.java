@@ -26,7 +26,7 @@ public class CategoryDaoImpl implements CategoryDao {
         if (count > 0) {
             int size = res.size();
             if (size > count) {
-                res = realm.where(Category.class).greaterThanOrEqualTo(Category.Structure.ID, size - count)
+                res = realm.where(Category.class).greaterThanOrEqualTo(Category.Structure.ID, res.get(size - count).getId())
                         .findAllSorted(Category.Structure.ID, Sort.ASCENDING);
             }
         }
@@ -38,6 +38,7 @@ public class CategoryDaoImpl implements CategoryDao {
     public Category getDefaultCategory() {
         Realm realm = RealmDelegate.getInstance();
         List<Category> res = realm.where(Category.class).equalTo(Category.Structure.TYPE, Category.TYPE_EXPENSE)
+                .notEqualTo(Category.Structure.ID, Category.Type.INCOME)
                 .findAllSorted(Category.Structure.COUNT, Sort.DESCENDING);
         return res.get(0);
     }

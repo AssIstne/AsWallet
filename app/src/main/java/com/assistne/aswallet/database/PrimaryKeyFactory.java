@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.assistne.aswallet.database.bean.Bill;
 import com.assistne.aswallet.database.bean.Category;
+import com.assistne.aswallet.database.bean.Tag;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -103,5 +104,9 @@ public class PrimaryKeyFactory {
 
     public static long nextCategoryKey() {
         return getInstance().nextKey(Category.class);
+    }
+
+    public static long nextTagKey() {
+        return getInstance().nextKey(Tag.class);
     }
 }

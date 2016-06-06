@@ -17,10 +17,8 @@ import io.realm.Sort;
 public class BillDaoImpl implements BillDao {
     @Override
     public Bill getBill(long id) {
-        Realm realm = Realm.getDefaultInstance();
-        Bill res = realm.where(Bill.class).equalTo(Bill.Structure.ID, id).findFirst();
-        realm.close();
-        return res;
+        Realm realm = RealmDelegate.getInstance();
+        return realm.where(Bill.class).equalTo(Bill.Structure.ID, id).findFirst();
     }
 
     @Override
@@ -35,7 +33,6 @@ public class BillDaoImpl implements BillDao {
     public List<Bill> getBillList(int count) {
         Realm realm = RealmDelegate.getInstance();
         List<Bill> res = realm.where(Bill.class).findAllSorted(Bill.Structure.ID, Sort.DESCENDING);
-        Logger.d("getBillList: " + res.size());
         if (count > 0) {
             int size = res.size();
             if (size > count) {

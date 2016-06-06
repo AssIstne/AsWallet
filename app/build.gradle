@@ -33,4 +33,5 @@ dependencies {
     compile 'com.github.orhanobut:logger:1.12'
     compile 'me.grantland:autofittextview:0.2.0'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    compile 'com.google.android:flexbox:0.2.1'
 }

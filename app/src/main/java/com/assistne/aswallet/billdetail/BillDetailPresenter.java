@@ -7,6 +7,8 @@ import com.assistne.aswallet.database.dao.BillDao;
 import com.assistne.aswallet.database.dao.BillDaoImpl;
 import com.assistne.aswallet.database.dao.CategoryDao;
 import com.assistne.aswallet.database.dao.CategoryDaoImpl;
+import com.assistne.aswallet.database.dao.TagDao;
+import com.assistne.aswallet.database.dao.TagDaoImpl;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.model.CategoryModel;
 import com.assistne.aswallet.model.ModelTool;
@@ -23,11 +25,13 @@ public class BillDetailPresenter implements BillMvp.Presenter{
     private BillMvp.View mView;
     private BillDao mBillDao;
     private CategoryDao mCategoryDao;
+    private TagDao mTagDao;
 
     public BillDetailPresenter(BillMvp.View view) {
         mView = view;
         mBillDao = new BillDaoImpl();
         mCategoryDao = new CategoryDaoImpl();
+        mTagDao = new TagDaoImpl();
     }
 
     @Override
@@ -36,12 +40,12 @@ public class BillDetailPresenter implements BillMvp.Presenter{
         long categoryId = billModel.getCategoryId();
         /** 手动计数 */
         Category category = mCategoryDao.increaseCategory(categoryId);
-        Bill bill = ModelTool.convert(billModel, category);
+        Bill bill = ModelTool.convert(billModel, category, mTagDao.getTag(billModel.getTagId()));
         if (bill.getId() == -1) {
             bill.setId(PrimaryKeyFactory.nextBillKey());
+            /** 新增时, 记录保存时的时间 */
+            bill.setDate(new Date());
         }
-        /** 记录保存时的时间 */
-        bill.setDate(new Date());
         Logger.d(bill.toString());
         mBillDao.updateBill(bill);
         mView.exit();
@@ -65,5 +69,10 @@ public class BillDetailPresenter implements BillMvp.Presenter{
     @Override
     public BillModel getBill(long id) {
         return ModelTool.convert(mBillDao.getBill(id));
+    }
+
+    @Override
+    public void getTag() {
+        mView.showTag(ModelTool.convertTagList(mTagDao.getTagList(-1)));
     }
 }

@@ -21,7 +21,9 @@ import com.assistne.aswallet.database.bean.Category;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.model.CategoryModel;
 import com.assistne.aswallet.model.ModelTool;
+import com.assistne.aswallet.model.TagModel;
 import com.assistne.aswallet.tools.FormatUtils;
+import com.assistne.aswallet.tools.PreCondition;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
@@ -178,12 +180,16 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
 
     public void chooseIncome() {
         /** 9是默认里面的收入类别 */
-        mBillInfoFragment.setCategory(mPresenter.getCategory(9));
+        mBillInfoFragment.setCategory(mPresenter.getCategory(Category.Type.INCOME));
     }
 
     public void chooseExpense() {
-        /** 9是默认里面的收入类别 */
-        mBillInfoFragment.setCategory(mPresenter.getDefaultCategory());
+        BillModel billModel = (BillModel) PreCondition.checkNotNull(mBillInfoFragment.getBill());
+        if (billModel.getCategoryId() > 0 && billModel.getCategoryId() != Category.Type.INCOME) {/** 9是默认里面的收入类别 */
+            mBillInfoFragment.setCategory(mPresenter.getCategory(billModel.getCategoryId()));
+        } else  {
+            mBillInfoFragment.setCategory(mPresenter.getDefaultCategory());
+        }
     }
 
     /** 长按, 仅处理删除按钮, 清空数字 */
@@ -241,5 +247,15 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
     @Override
     public void selectCategory(CategoryModel category) {
 
+    }
+
+    @Override
+    public void showTag(List<TagModel> tagList) {
+        Logger.d("show tag " + tagList.size());
+        mBillInfoFragment.showTagSpan(tagList);
+    }
+
+    public void getShowTag() {
+        mPresenter.getTag();
     }
 }

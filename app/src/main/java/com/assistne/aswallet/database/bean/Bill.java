@@ -1,5 +1,6 @@
 package com.assistne.aswallet.database.bean;
 
+import android.support.annotation.Nullable;
 import android.text.format.DateFormat;
 
 import com.orhanobut.logger.Logger;
@@ -24,6 +25,7 @@ public class Bill extends RealmObject {
         String ID = "id";
         String DES = "description";
         String CAT = "category";
+        String TAG = "tag";
         String DATE = "date";
         String TYPE = "type";
         String PRICE = "price";
@@ -33,6 +35,7 @@ public class Bill extends RealmObject {
     private long id;
     private String description;
     private Category category;
+    private Tag tag;
     @Required
     private Date date;
     private int type;
@@ -92,11 +95,21 @@ public class Bill extends RealmObject {
         this.id = id;
     }
 
+    @Nullable
+    public Tag getTag() {
+        return tag;
+    }
+
+    public void setTag(Tag tag) {
+        this.tag = tag;
+    }
+
     @Override
     public String toString() {
         return super.toString() + "\n\tid   : " + id + "" +
                 "\n\tprice: " + price +
                 "\n\tcat  : " + (category == null ? "no-cat" : category.getName()) +
+                "\n\ttag  : " + (tag == null ? "no-tag" : tag.getName()) +
                 "\n\tdate : " + DateFormat.format("yyyy-MM-dd HH:mm:ss", date) +
                 "\n\ttype : " + (type == TYPE_INCOME ? "income" : "expense") +
                 "\n\tdes  : " + description ;
