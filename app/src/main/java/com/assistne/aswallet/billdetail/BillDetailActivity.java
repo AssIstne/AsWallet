@@ -1,10 +1,7 @@
 package com.assistne.aswallet.billdetail;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -20,7 +17,6 @@ import com.assistne.aswallet.component.KeyboardFragment;
 import com.assistne.aswallet.database.bean.Category;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.model.CategoryModel;
-import com.assistne.aswallet.model.ModelTool;
 import com.assistne.aswallet.model.TagModel;
 import com.assistne.aswallet.tools.FormatUtils;
 import com.assistne.aswallet.tools.PreCondition;
@@ -141,13 +137,15 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
     @Override
     public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() > 0) {
+            // 类别列表显示了出来, 那么直接隐藏
             for (int i = 0; i < getFragmentManager().getBackStackEntryCount(); i++) {
                 getFragmentManager().popBackStack();
             }
             /** 对应下面, 把背景色显示出来 */
             mInfoSpan.animate().setDuration(400).setInterpolator(new AccelerateInterpolator()).translationY(0).start();
             mListCategory.animate().alpha(0).setDuration(400);
-        } else {
+        } else if (!mBillInfoFragment.onBackPressed()){
+            // 主界面显示的时候, 看看Fragment要不要处理返回点击事件
             super.onBackPressed();
         }
     }
@@ -171,9 +169,7 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
         mListCategory.animate().alpha(1).setDuration(400);
         /** 这里是由于要产生阴影所以背景色不能是透明, 所以这里要手动把背景色跟着Fragment向上滑动 */
         mInfoSpan.animate().setDuration(400).setInterpolator(new AccelerateInterpolator()).translationY(-mInfoSpan.getHeight()).start();
-        Logger.d("size " + mAdapter.getItemCount());
         if (mAdapter.getItemCount() == 0) {
-            Logger.d("get cat");
             mPresenter.getCategory();
         }
     }
@@ -251,7 +247,6 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
 
     @Override
     public void showTag(List<TagModel> tagList) {
-        Logger.d("show tag " + tagList.size());
         mBillInfoFragment.showTagSpan(tagList);
     }
 

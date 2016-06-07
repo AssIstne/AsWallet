@@ -5,7 +5,7 @@ import io.realm.RealmObject;
 /**
  * 1. 当没有描述的时候代替描述
  * 2. 类别的二级分类
- * 3. 可以多选, 同一个类别的tag只能选一个
+ * 3. 只能选一个
  * Created by assistne on 16/6/6.
  */
 public class Tag extends RealmObject {
