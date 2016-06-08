@@ -13,6 +13,10 @@ public interface TagDao {
      * @param count 取出的数量, -1表示全部*/
     List<Tag> getTagList(int count);
 
+    List<Tag> getIncomeTagList(int count);
+
+    List<Tag> getExpenseTagList(int count);
+
     void updateTag(Tag tag);
     Tag increaseTag(long id);
 }

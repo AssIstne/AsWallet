@@ -10,128 +10,121 @@
     android:orientation="vertical"
     >
 
-    <FrameLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@android:color/transparent"
         android:clipChildren="false"
         android:clipToPadding="false"
         >
-
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/bill_info_span_type"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_height="56dp"
             android:background="@android:color/transparent"
             android:clipChildren="false"
             android:clipToPadding="false"
             >
-            <RelativeLayout
-                android:id="@+id/bill_info_span_type"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:background="@android:color/transparent"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                >
-                <ImageView
-                    android:id="@+id/bill_info_division"
-                    android:layout_width="2dp"
-                    android:layout_height="30dp"
-                    android:background="@android:color/white"
-                    android:layout_centerInParent="true"
-                    />
-                <Button
-                    android:id="@+id/bill_info_btn_income"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/income"
-                    android:textSize="24sp"
-                    android:textColor="@color/selector_btn_text"
-                    android:layout_toStartOf="@id/bill_info_division"
-                    style="@style/Base.Widget.AppCompat.Button.Borderless"
-                    android:layout_alignBaseline="@id/bill_info_division"
-                    android:layout_centerVertical="true"
-                    />
-                <Button
-                    android:id="@+id/bill_info_btn_expense"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/expense"
-                    android:textSize="24sp"
-                    android:textColor="@color/selector_btn_text"
-                    android:layout_toEndOf="@id/bill_info_division"
-                    style="@style/Base.Widget.AppCompat.Button.Borderless"
-                    android:layout_centerVertical="true"
-                    />
-            </RelativeLayout>
+            <ImageView
+                android:id="@+id/bill_info_division"
+                android:layout_width="2dp"
+                android:layout_height="30dp"
+                android:background="@android:color/white"
+                android:layout_centerInParent="true"
+                />
+            <Button
+                android:id="@+id/bill_info_btn_income"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/income"
+                android:textSize="24sp"
+                android:textColor="@color/selector_btn_text"
+                android:layout_toStartOf="@id/bill_info_division"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_alignBaseline="@id/bill_info_division"
+                android:layout_centerVertical="true"
+                />
+            <Button
+                android:id="@+id/bill_info_btn_expense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/expense"
+                android:textSize="24sp"
+                android:textColor="@color/selector_btn_text"
+                android:layout_toEndOf="@id/bill_info_division"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:background="@android:color/transparent"
-                >
-                <TextView
-                    android:id="@+id/bill_info_text_currency"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/material_margin_16"
-                    android:text="@string/global_CNY"
-                    android:textSize="34sp"
-                    android:textColor="@android:color/white"
-                    android:fontFamily="sans-serif-light"
-                    />
-                <!-- 金额的镜像, 用来实现动画 -->
-                <TextView
-                    android:id="@+id/bill_info_txt_price_mirror"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toStartOf="@id/bill_info_text_currency"
-                    android:layout_marginEnd="8dp"
-                    android:layout_centerVertical="true"
-                    android:textColor="@android:color/white"
-                    android:fontFamily="sans-serif-light"
-                    android:gravity="end|center_vertical"
-                    tools:text="10"
-                    tools:textSize="112sp"
-                    android:visibility="gone"
-                    />
-                <me.grantland.widget.AutofitTextView
-                    android:id="@+id/bill_info_text_price"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toStartOf="@id/bill_info_text_currency"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="@dimen/material_margin_16"
-                    android:layout_centerVertical="true"
-                    android:gravity="end|center_vertical"
-                    android:lines="1"
-                    android:maxLines="1"
-                    android:text="@string/global_zero"
-                    android:textSize="112sp"
-                    android:textColor="@android:color/white"
-                    android:fontFamily="sans-serif-light"
-                    />
-            </RelativeLayout>
-        </LinearLayout>
-        <com.google.android.flexbox.FlexboxLayout
-            android:id="@+id/bill_detail_span_tag"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="@dimen/material_margin_16"
-            android:background="@color/green_500"
-            android:visibility="invisible"
-            app:justifyContent="flex_start"
-            app:flexWrap="wrap"
-            app:alignItems="flex_start"
-            app:alignContent="flex_start"
-            android:clickable="true"
-            />
-    </FrameLayout>
+            android:layout_height="140dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:background="@android:color/transparent"
+            >
+            <TextView
+                android:id="@+id/bill_info_text_currency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/material_margin_16"
+                android:text="@string/global_CNY"
+                android:textSize="34sp"
+                android:textColor="@android:color/white"
+                android:fontFamily="sans-serif-light"
+                />
+            <me.grantland.widget.AutofitTextView
+                android:id="@+id/bill_info_text_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/bill_info_text_currency"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="@dimen/material_margin_16"
+                android:layout_centerVertical="true"
+                android:gravity="end|center_vertical"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="@string/global_zero"
+                android:textSize="112sp"
+                android:textColor="@android:color/white"
+                android:fontFamily="sans-serif-light"
+                />
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/bill_detail_span_tag"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/material_margin_16"
+                android:background="@color/green_500"
+                android:visibility="invisible"
+                app:justifyContent="flex_start"
+                app:flexWrap="wrap"
+                app:alignItems="flex_start"
+                app:alignContent="flex_start"
+                android:clickable="true"
+                />
+            <!-- 金额的镜像, 用来实现动画 -->
+            <TextView
+                android:id="@+id/bill_info_txt_price_mirror"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/bill_info_text_currency"
+                android:layout_marginEnd="8dp"
+                android:layout_centerVertical="true"
+                android:textColor="@android:color/white"
+                android:fontFamily="sans-serif-light"
+                android:gravity="end|center_vertical"
+                tools:text="10"
+                tools:textSize="112sp"
+                android:visibility="gone"
+                />
+        </RelativeLayout>
+    </LinearLayout>
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

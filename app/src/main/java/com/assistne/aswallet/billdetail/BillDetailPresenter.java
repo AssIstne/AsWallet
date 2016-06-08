@@ -72,7 +72,11 @@ public class BillDetailPresenter implements BillMvp.Presenter{
     }
 
     @Override
-    public void getTag() {
-        mView.showTag(ModelTool.convertTagList(mTagDao.getTagList(-1)));
+    public void getTag(int type) {
+        if (type == Category.TYPE_INCOME) {
+            mView.showTag(ModelTool.convertTagList(mTagDao.getIncomeTagList(-1)));
+        } else {
+            mView.showTag(ModelTool.convertTagList(mTagDao.getExpenseTagList(-1)));
+        }
     }
 }

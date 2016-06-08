@@ -4,10 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Path;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,7 +26,6 @@ import android.widget.Toast;
 
 import com.assistne.aswallet.R;
 import com.assistne.aswallet.component.BackPressHandler;
-import com.assistne.aswallet.component.MyApplication;
 import com.assistne.aswallet.database.bean.Bill;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.model.CategoryModel;
@@ -63,6 +62,8 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener, 
 
     private BillModel mBillModel;
     private boolean mIsTagShow;
+    private float mOriginCurrencyTextSize;
+    private View.OnClickListener mTagClickListener;
 
     public static BillInfoFragment newInstance(BillModel bill) {
         BillInfoFragment fragment = new BillInfoFragment();
@@ -93,6 +94,34 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener, 
             mBillModel = new BillModel();
         }
         showBill(mBillModel);
+        // 记录一下CNY原来的大小
+        mOriginCurrencyTextSize = mCurrencyTxt.getTextSize();
+        /**
+         * 标签点击事件 */
+        mTagClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /** 选中的标签视图会存入{@link BillInfoFragment#mTagSpan}中 */
+                Object formerView = mTagSpan.getTag();
+                // 把旧的标签取消选择
+                if (formerView != null && formerView instanceof TextView) {
+                    TextView textView = (TextView)formerView;
+                    textView.setSelected(false);
+                    textView.setTextColor(Color.WHITE);
+                }
+                // 标签实例存在标签
+                TagModel tagModel = (TagModel) v.getTag();
+                if (tagModel.getId() == mBillModel.getTagId()) {
+                    mTagSpan.setTag(null);
+                } else {
+                    ((TextView)v).setTextColor(ContextCompat.getColor(getActivity(), R.color.green_500));
+                    v.setSelected(true);
+                    mTagSpan.setTag(v);
+                }
+                /** 根据标签选类别 */
+                ((BillDetailActivity)getActivity()).selectCategory(tagModel.getCategoryId());
+            }
+        };
         return root;
     }
 
@@ -102,13 +131,13 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener, 
         switch (v.getId()) {
             case R.id.bill_info_btn_expense:
                 mBillModel.setType(Bill.TYPE_EXPENSE);
-                setExpense();
+                setExpenseUI();
                 ((BillDetailActivity)getActivity()).chooseExpense();
                 mCategorySpan.setClickable(true);
                 break;
             case R.id.bill_info_btn_income:
                 mBillModel.setType(Bill.TYPE_INCOME);
-                setIncome();
+                setIncomeUI();
                 ((BillDetailActivity)getActivity()).chooseIncome();
                 mCategorySpan.setClickable(false);
                 break;
@@ -116,52 +145,46 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener, 
                 ((BillDetailActivity)getActivity()).showCategoryList();
                 break;
             case R.id.bill_info_img_tag:
-                getTextMoveAni().start();
-//                if (mIsTagShow) {
-//                    hideTagSpan();
-//                } else {
-//                    ((BillDetailActivity)getActivity()).getShowTag();
-//                }
+                if (mIsTagShow) {
+                    hideTagSpan();
+                } else {
+                    ((BillDetailActivity)getActivity()).getShowTag(mBillModel.getType());
+                }
                 break;
         }
     }
 
+    /**
+     * 显示标签面板同时通过动画移动金额文字
+     * */
     public void showTagSpan(List<TagModel> tagList) {
         if (tagList != null && tagList.size() > 0) {
             mIsTagShow = true;
-            int cx = mTagSpan.getRight();
+            int cx = mTagSpan.getLeft();
             int cy = (mTagSpan.getTop() + mTagSpan.getBottom()) / 2;
             int finalRadius = Math.max(mTagSpan.getWidth(), mTagSpan.getHeight());
+            // circle reveal效果
             Animator anim =
                     ViewAnimationUtils.createCircularReveal(mTagSpan, cx, cy, 0, finalRadius);
             mTagSpan.setVisibility(View.VISIBLE);
+            // 移动金额文本
             AnimatorSet moveTextAni = getTextMoveAni();
             moveTextAni.playTogether(anim);
             moveTextAni.start();
             if (mTagSpan.getChildCount() != tagList.size()) {
                 FlexboxLayout.LayoutParams layoutParams = new FlexboxLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                /** 一定要这样重复设置
+                 * {@link com.google.android.flexbox.FlexboxLayout.LayoutParams#setMargins(int, int, int, int)}
+                 * 中的top和bottom才会生效*/
                 layoutParams.setMarginStart(0);
                 layoutParams.setMarginEnd(50);
                 layoutParams.setMargins(0, 0, 50, 20);
-                layoutParams.flexShrink = 0;
-                View.OnClickListener onClickListener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Object formerView = mTagSpan.getTag();
-                        if (formerView != null && formerView instanceof TextView) {
-                            TextView textView = (TextView)formerView;
-                            textView.setSelected(false);
-                            textView.setTextColor(Color.WHITE);
-                        }
-                        mTagSpan.setTag(v);
-                        v.setSelected(true);
-                        ((TextView)v).setTextColor(ContextCompat.getColor(getActivity(), R.color.green_500));
-                    }
-                };
+                // 重新添加标签视图
                 mTagSpan.removeAllViews();
                 for (TagModel tagModel : tagList) {
                     TextView view = new TextView(getActivity());
+                    // 把实例放入视图中
                     view.setTag(tagModel);
                     view.setText(tagModel.getName());
                     view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -169,8 +192,8 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener, 
                     view.setBackgroundResource(R.drawable.selector_tag_bg);
                     view.setPadding(20, 10, 20, 10);
                     view.setLayoutParams(layoutParams);
-                    view.setOnClickListener(onClickListener);
-                    if (mBillModel.getTagId() == tagModel.getId()) {
+                    view.setOnClickListener(mTagClickListener);
+                    if (mBillModel.getTagId() == tagModel.getId()) {// 显示已经被选中的标签
                         view.setSelected(true);
                         view.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_500));
                         mTagSpan.setTag(view);
@@ -185,41 +208,67 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener, 
 
     private AnimatorSet getTextMoveAni() {
         AnimatorSet set = new AnimatorSet();
-        int typeSpanDistance = mBillModel.isIncome() ? 100 : 100 + mExpenseBtn.getLeft() - mIncomeBtn.getLeft();
+        int typeSpanDistance;
+        if (mPriceTxt.getText().length() > 5) {
+            // 金额太大, 不居中
+            typeSpanDistance = mBillModel.isIncome() ? 0 : -mExpenseBtn.getWidth();
+        } else {
+            // 要显示类别放到中间, 不显示的隐藏
+            typeSpanDistance = mBillModel.isIncome() ? mExpenseBtn.getWidth()/2 : -mExpenseBtn.getWidth()/2;
+        }
         AnimatorSet typeSpanSet = new AnimatorSet();
         typeSpanSet.playTogether(
-                ObjectAnimator.ofFloat(mTypeSpan, "translationX", -typeSpanDistance),
+                ObjectAnimator.ofFloat(mTypeSpan, "translationX", typeSpanDistance),
                 ObjectAnimator.ofFloat(mBillModel.isIncome() ? mExpenseBtn : mIncomeBtn, "alpha", 0),
                 ObjectAnimator.ofFloat(mDivision, "alpha", 0)
         );
         AnimatorSet priceSet = new AnimatorSet();
-        int textSize = 20;// 单位是SP
-        float translationY = -(mTypeSpan.getHeight() + mCurrencyTxt.getTop());
-        Logger.d("translationY  " + translationY);
-        translationY = -200;
+        // 缩小文本
+        float textSize = DensityTool.spToPx(25);// 单位是PX
+        ValueAnimator currencyTextSizeAni = ValueAnimator.ofFloat(mOriginCurrencyTextSize, textSize);
+        currencyTextSizeAni.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mCurrencyTxt.setTextSize(TypedValue.COMPLEX_UNIT_PX, (float) animation.getAnimatedValue());
+            }
+        });
+        ValueAnimator priceTextSizeAni = ValueAnimator.ofFloat(mPriceTxt.getTextSize(), textSize);
+        priceTextSizeAni.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mPriceTxtMirror.setTextSize(TypedValue.COMPLEX_UNIT_PX, (float) animation.getAnimatedValue());
+            }
+        });
+        // 计算从原来位置运动到跟类别一条水平线上的位移
+        float translationY = -(mTypeSpan.getHeight()/2 + mCurrencyTxt.getTop() + mCurrencyTxt.getHeight()/2);
         priceSet.playTogether(
-                ObjectAnimator.ofFloat(mCurrencyTxt, "textSize", textSize),
-                ObjectAnimator.ofFloat(mPriceTxtMirror, "textSize", textSize),
+                currencyTextSizeAni,
+                priceTextSizeAni,
                 ObjectAnimator.ofFloat(mCurrencyTxt, "translationY", translationY),
                 ObjectAnimator.ofFloat(mPriceTxtMirror, "translationY", translationY)
         );
-        priceSet.setDuration(2000);
         set.playTogether(typeSpanSet, priceSet);
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
+                /** 制造金额的镜像用来显示动画 */
                 mPriceTxtMirror.setTextSize(mPriceTxt.getTextSize());
                 mPriceTxtMirror.setText(mPriceTxt.getText());
                 mPriceTxtMirror.setVisibility(View.VISIBLE);
                 mPriceTxt.setVisibility(View.INVISIBLE);
             }
         });
+
         return set;
     }
 
+    /**
+     * 隐藏标签面板同时通过动画移动金额文字
+     * {@link #showTagSpan(List)}的逆操作
+     * */
     private void hideTagSpan() {
         mIsTagShow = false;
-        int cx = mTagSpan.getRight();
+        int cx = mTagSpan.getLeft();
         int cy = (mTagSpan.getTop() + mTagSpan.getBottom()) / 2;
         int initialRadius = mTagSpan.getWidth();
         Animator anim = ViewAnimationUtils.createCircularReveal(mTagSpan, cx, cy, initialRadius, 0);
@@ -230,25 +279,69 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener, 
                 mTagSpan.setVisibility(View.INVISIBLE);
             }
         });
-        anim.start();
-
+        AnimatorSet restoreAni = getTextRestoreAni();
+        restoreAni.playTogether(anim);
+        restoreAni.start();
     }
 
+    /** 对应{@link #getTextMoveAni()}*/
+    private AnimatorSet getTextRestoreAni() {
+        AnimatorSet set = new AnimatorSet();
+        AnimatorSet typeSpanSet = new AnimatorSet();
+        typeSpanSet.playTogether(
+                ObjectAnimator.ofFloat(mTypeSpan, "translationX", 0),
+                ObjectAnimator.ofFloat(mBillModel.isIncome() ? mExpenseBtn : mIncomeBtn, "alpha", 1),
+                ObjectAnimator.ofFloat(mDivision, "alpha", 1)
+        );
+        AnimatorSet priceSet = new AnimatorSet();
+        ValueAnimator currencyTextSizeAni = ValueAnimator.ofFloat(mCurrencyTxt.getTextSize(), mOriginCurrencyTextSize);
+        currencyTextSizeAni.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mCurrencyTxt.setTextSize(TypedValue.COMPLEX_UNIT_PX, (float) animation.getAnimatedValue());
+            }
+        });
+        ValueAnimator priceTextSizeAni = ValueAnimator.ofFloat(mPriceTxtMirror.getTextSize(), mPriceTxt.getTextSize());
+        priceTextSizeAni.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mPriceTxtMirror.setTextSize(TypedValue.COMPLEX_UNIT_PX, (float) animation.getAnimatedValue());
+            }
+        });
+        priceSet.playTogether(
+                currencyTextSizeAni,
+                priceTextSizeAni,
+                ObjectAnimator.ofFloat(mCurrencyTxt, "translationY", 0),
+                ObjectAnimator.ofFloat(mPriceTxtMirror, "translationY", 0)
+        );
+        set.playTogether(typeSpanSet, priceSet);
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                mPriceTxtMirror.setVisibility(View.INVISIBLE);
+                mPriceTxt.setVisibility(View.VISIBLE);
+            }
+        });
 
-    private void setIncome() {
+        return set;
+    }
+
+    private void setIncomeUI() {
         mExpenseBtn.setTypeface(null, Typeface.NORMAL);
         mIncomeBtn.setTypeface(null, Typeface.BOLD);
         mExpenseBtn.setActivated(false);
         mIncomeBtn.setActivated(true);
     }
 
-    private void setExpense(){
+    private void setExpenseUI(){
         mExpenseBtn.setTypeface(null, Typeface.BOLD);
         mIncomeBtn.setTypeface(null, Typeface.NORMAL);
         mIncomeBtn.setActivated(false);
         mExpenseBtn.setActivated(true);
     }
 
+    /**
+     * 修改金额, 会影响{@link #mBillModel} */
     public void setPriceText(String content) {
         mPriceTxt.setText(content);
         mBillModel.setPrice(FormatUtils.textToMoney(content));
@@ -264,9 +357,9 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener, 
             mCategoryTxt.setText(mBillModel.getCategoryName());
             mDescriptionTxt.setText(bill.getDescription());
             if (!bill.isIncome()) {
-                setExpense();
+                setExpenseUI();
             } else {
-                setIncome();
+                setIncomeUI();
             }
         }
     }
@@ -284,8 +377,9 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener, 
         return mBillModel;
     }
 
+    /**
+     * 修改类别, 会影响{@link #mBillModel} */
     public void setCategory(@NonNull CategoryModel category) {
-        Logger.d(category.toString());
         mBillModel.setCategoryName(category.getName());
         mBillModel.setCategoryId(category.getId());
         mCategoryTxt.setText(category.getName());

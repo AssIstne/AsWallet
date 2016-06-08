@@ -17,6 +17,7 @@ import com.assistne.aswallet.component.KeyboardFragment;
 import com.assistne.aswallet.database.bean.Category;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.model.CategoryModel;
+import com.assistne.aswallet.model.ModelTool;
 import com.assistne.aswallet.model.TagModel;
 import com.assistne.aswallet.tools.FormatUtils;
 import com.assistne.aswallet.tools.PreCondition;
@@ -241,8 +242,8 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
     }
 
     @Override
-    public void selectCategory(CategoryModel category) {
-
+    public void selectCategory(long categoryId) {
+        mBillInfoFragment.setCategory(mPresenter.getCategory(categoryId));
     }
 
     @Override
@@ -250,7 +251,7 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
         mBillInfoFragment.showTagSpan(tagList);
     }
 
-    public void getShowTag() {
-        mPresenter.getTag();
+    public void getShowTag(int type) {
+        mPresenter.getTag(type);
     }
 }

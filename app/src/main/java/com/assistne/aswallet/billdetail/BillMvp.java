@@ -15,7 +15,7 @@ public interface BillMvp {
     interface View {
         void exit();
         void showCategory(List<CategoryModel> categoryList);
-        void selectCategory(CategoryModel category);
+        void selectCategory(long categoryId);
         void showTag(List<TagModel> tagList);
     }
 
@@ -28,6 +28,6 @@ public interface BillMvp {
         CategoryModel getCategory(long id);
         BillModel getBill(long id);
 
-        void getTag();
+        void getTag(int type);
     }
 }
