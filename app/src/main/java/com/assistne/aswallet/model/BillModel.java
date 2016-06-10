@@ -107,6 +107,11 @@ public class BillModel implements Parcelable{
         this.tagId = tagId;
     }
 
+    public void clearTag() {
+        tagId = -1;
+        tagName = "";
+    }
+
     @Override
     public String toString() {
         return super.toString() + "\n\tid   : " + id + "" +

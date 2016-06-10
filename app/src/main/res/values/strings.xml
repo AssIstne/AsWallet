@@ -15,5 +15,6 @@
     <string name="today">今天 %s</string>
     <string name="yesterday">昨天 %s</string>
 
+    <string name="description_holder">No Description</string>
     <string name="overflow_msg">不能再多了~土豪!我们做朋友吧!（¯﹃¯）口水</string>
 </resources>

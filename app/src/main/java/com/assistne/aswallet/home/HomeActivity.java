@@ -10,7 +10,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.View;
 
 import com.assistne.aswallet.R;
@@ -79,7 +78,6 @@ public class HomeActivity extends BaseActivity implements HomeMvp.View {
     private void setUpItemTouchHelper() {
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            private static final String TAG = "#SimpleCallback";
 
             // we want to cache these and not allocate anything repeatedly in the onChildDraw method
             Drawable background;
@@ -108,7 +106,6 @@ public class HomeActivity extends BaseActivity implements HomeMvp.View {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int swipedPosition = viewHolder.getAdapterPosition();
-                Logger.d("on Swiped ==> " + swipedPosition);
                 HomeListAdapter adapter = (HomeListAdapter)mRecyclerView.getAdapter();
                 adapter.remove(swipedPosition);
             }

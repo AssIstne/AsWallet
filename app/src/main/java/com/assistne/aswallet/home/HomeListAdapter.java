@@ -13,7 +13,6 @@ import com.assistne.aswallet.R;
 import com.assistne.aswallet.component.MyApplication;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.tools.FormatUtils;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +76,13 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
             BillModel bill = mData.get(position);
             holder.imgIcon.setImageResource(bill.getCategoryIconRes());
             holder.tvDate.setText(FormatUtils.dateToText(bill.getDate().getTime()));
-            holder.tvDescription.setText(TextUtils.isEmpty(bill.getDescription()) ? "Random" : bill.getDescription());
+            if (!TextUtils.isEmpty(bill.getDescription())) {
+                holder.tvDescription.setText(bill.getDescription());
+            } else if (!TextUtils.isEmpty(bill.getTagName())) {
+                holder.tvDescription.setText(bill.getTagName());
+            } else {
+                holder.tvDescription.setText(R.string.description_holder);
+            }
             holder.tvPrice.setText(String.format(
                     MyApplication.getStaticContext().getString(bill.isIncome() ? R.string.income_money : R.string.global_CNY_ZH),
                     FormatUtils.moneyText(bill.getPrice())));

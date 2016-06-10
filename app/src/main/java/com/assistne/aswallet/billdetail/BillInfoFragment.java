@@ -33,7 +33,6 @@ import com.assistne.aswallet.model.TagModel;
 import com.assistne.aswallet.tools.DensityTool;
 import com.assistne.aswallet.tools.FormatUtils;
 import com.google.android.flexbox.FlexboxLayout;
-import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -103,23 +102,25 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener, 
             public void onClick(View v) {
                 /** 选中的标签视图会存入{@link BillInfoFragment#mTagSpan}中 */
                 Object formerView = mTagSpan.getTag();
+                TagModel oldTag = null;
                 // 把旧的标签取消选择
                 if (formerView != null && formerView instanceof TextView) {
                     TextView textView = (TextView)formerView;
                     textView.setSelected(false);
                     textView.setTextColor(Color.WHITE);
+                    oldTag = (TagModel) textView.getTag();
                 }
-                // 标签实例存在标签
+                // 标签实例存在标签视图
                 TagModel tagModel = (TagModel) v.getTag();
-                if (tagModel.getId() == mBillModel.getTagId()) {
+                if (oldTag != null && tagModel.getId() == oldTag.getId()) {
                     mTagSpan.setTag(null);
                 } else {
+                    /** 根据标签选类别, 选类别会清空标签, 因此先选类别, 再选标签 */
+                    ((BillDetailActivity)getActivity()).selectCategory(tagModel.getCategoryId());
                     ((TextView)v).setTextColor(ContextCompat.getColor(getActivity(), R.color.green_500));
                     v.setSelected(true);
                     mTagSpan.setTag(v);
                 }
-                /** 根据标签选类别 */
-                ((BillDetailActivity)getActivity()).selectCategory(tagModel.getCategoryId());
             }
         };
         return root;
@@ -134,12 +135,14 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener, 
                 setExpenseUI();
                 ((BillDetailActivity)getActivity()).chooseExpense();
                 mCategorySpan.setClickable(true);
+                mTagSpan.setTag(null);
                 break;
             case R.id.bill_info_btn_income:
                 mBillModel.setType(Bill.TYPE_INCOME);
                 setIncomeUI();
                 ((BillDetailActivity)getActivity()).chooseIncome();
                 mCategorySpan.setClickable(false);
+                mTagSpan.setTag(null);
                 break;
             case R.id.bill_info_vg_category:
                 ((BillDetailActivity)getActivity()).showCategoryList();
@@ -159,6 +162,8 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener, 
      * */
     public void showTagSpan(List<TagModel> tagList) {
         if (tagList != null && tagList.size() > 0) {
+            mExpenseBtn.setClickable(false);
+            mIncomeBtn.setClickable(false);
             mIsTagShow = true;
             int cx = mTagSpan.getLeft();
             int cy = (mTagSpan.getTop() + mTagSpan.getBottom()) / 2;
@@ -180,6 +185,7 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener, 
                 layoutParams.setMarginStart(0);
                 layoutParams.setMarginEnd(50);
                 layoutParams.setMargins(0, 0, 50, 20);
+                layoutParams.flexShrink = 0;
                 // 重新添加标签视图
                 mTagSpan.removeAllViews();
                 for (TagModel tagModel : tagList) {
@@ -267,6 +273,8 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener, 
      * {@link #showTagSpan(List)}的逆操作
      * */
     private void hideTagSpan() {
+        mExpenseBtn.setClickable(true);
+        mIncomeBtn.setClickable(true);
         mIsTagShow = false;
         int cx = mTagSpan.getLeft();
         int cy = (mTagSpan.getTop() + mTagSpan.getBottom()) / 2;
@@ -344,6 +352,7 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener, 
      * 修改金额, 会影响{@link #mBillModel} */
     public void setPriceText(String content) {
         mPriceTxt.setText(content);
+        mPriceTxtMirror.setText(content);
         mBillModel.setPrice(FormatUtils.textToMoney(content));
     }
 
@@ -383,6 +392,9 @@ public class BillInfoFragment extends Fragment implements View.OnClickListener, 
         mBillModel.setCategoryName(category.getName());
         mBillModel.setCategoryId(category.getId());
         mCategoryTxt.setText(category.getName());
+        // 手动选择类别则取消选择标签
+        mBillModel.clearTag();
+        mTagSpan.setTag(null);
     }
 
     private void hideSoftKeyBoard() {

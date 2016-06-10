@@ -17,7 +17,6 @@ import com.assistne.aswallet.component.KeyboardFragment;
 import com.assistne.aswallet.database.bean.Category;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.model.CategoryModel;
-import com.assistne.aswallet.model.ModelTool;
 import com.assistne.aswallet.model.TagModel;
 import com.assistne.aswallet.tools.FormatUtils;
 import com.assistne.aswallet.tools.PreCondition;
