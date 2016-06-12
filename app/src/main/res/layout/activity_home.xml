@@ -72,6 +72,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:itemIconTint="@color/grey_500"
+        app:itemBackground="@drawable/ripple_list_item_bg"
+        app:itemTextColor="@color/grey_500"
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/drawer"/>
 </android.support.v4.widget.DrawerLayout>

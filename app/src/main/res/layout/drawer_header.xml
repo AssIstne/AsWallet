@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    >
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/drawer_header_bg"
+        android:scaleType="centerCrop"
+        />
+
+    <ImageView
+        android:id="@+id/drawer_avatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/material_margin_16"
+        android:layout_marginTop="44dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/ic_avatar"
+        />
+    <TextView
+        android:id="@+id/drawer_income"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/drawer_avatar"
+        android:layout_below="@id/drawer_avatar"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="3dp"
+        style="@style/Material_SubHeader"
+        android:text="月收入 : 19,000"
+        android:textColor="@color/grey_800"
+        />
+
+    <TextView
+        android:id="@+id/drawer_expense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/drawer_income"
+        android:layout_below="@id/drawer_income"
+        style="@style/Material_SubHeader"
+        android:text="月支出 : 16,347"
+        android:textColor="@color/grey_800"
+        />
+
+    <View
+        android:id="@+id/drawer_guide_line"
+        android:layout_width="55dp"
+        android:layout_height="1dp"
+        android:layout_below="@id/drawer_expense"
+        android:layout_alignEnd="@id/drawer_expense"
+        android:background="@color/grey_800"
+        />
+
+    <TextView
+        android:id="@+id/drawer_difference"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/drawer_guide_line"
+        android:layout_alignEnd="@id/drawer_expense"
+        style="@style/Material_SubHeader"
+        android:text="- 1,333"
+        android:textColor="@color/grey_800"
+        />
+</RelativeLayout>

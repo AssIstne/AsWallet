@@ -15,6 +15,14 @@
     <string name="today">今天 %s</string>
     <string name="yesterday">昨天 %s</string>
 
+    <string name="menu_title">设置</string>
+    <string name="menu_analyze">统计分析</string>
+    <string name="menu_cat">类别管理</string>
+    <string name="menu_tag">标签管理</string>
+    <string name="menu_notification">通知设置</string>
+    <string name="menu_schedule">定时记账</string>
+    <string name="menu_info">关于</string>
+
     <string name="description_holder">No Description</string>
     <string name="overflow_msg">不能再多了~土豪!我们做朋友吧!（¯﹃¯）口水</string>
 </resources>
