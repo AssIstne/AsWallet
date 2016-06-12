@@ -2,14 +2,20 @@ package com.assistne.aswallet.home;
 
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.View;
 
 import com.assistne.aswallet.R;
@@ -26,6 +32,8 @@ import butterknife.ButterKnife;
 public class HomeActivity extends BaseActivity implements HomeMvp.View {
     @Bind(R.id.home_btn_fab) FloatingActionButton mFab;
     @Bind(R.id.home_list) RecyclerView mRecyclerView;
+    @Bind(R.id.toolbar) Toolbar mToolbar;
+    @Bind(R.id.home_span_drawer) DrawerLayout mDrawer;
 
     private HomeListAdapter mAdapter;
     private HomeMvp.Presenter mPresenter;
@@ -35,11 +43,18 @@ public class HomeActivity extends BaseActivity implements HomeMvp.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
+        setSupportActionBar(mToolbar);
         initMembers();
     }
 
     private void initMembers() {
         mPresenter = new HomePresenter(this);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawer.openDrawer(GravityCompat.START);
+            }
+        });
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="AppTheme.Base"/>
-
+    <!-- 基础主题 -->
     <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/light_green_700</item>
         <item name="colorPrimaryDark">@color/light_green_900</item>
         <item name="android:windowBackground">@color/grey_50</item>
+    </style>
+
+    <!-- 通用主题 -->
+    <style name="AppTheme" parent="AppTheme.Base">
+
+    </style>
+
+    <!-- 首页主题 -->
+    <style name="AppTheme.Home" parent="AppTheme.Base">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="colorPrimary">@color/dark_green_c1</item>
+        <item name="colorPrimaryDark">@color/dark_green_c1</item>
     </style>
 
     <style name="Material_Headline">
@@ -15,6 +26,11 @@
 
     <style name="Material_Title">
         <item name="android:textSize">@dimen/font_size_title</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="Material_Toolbar_Title">
+        <item name="android:textSize">@dimen/font_size_headline</item>
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
@@ -47,5 +63,10 @@
         <item name="android:textColor">@color/keyboard_text</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ActionBarTheme" parent="Widget.AppCompat.Toolbar">
+        <item name="selectableItemBackground">?android:selectableItemBackground</item>
+        <item name="selectableItemBackgroundBorderless">?android:selectableItemBackground</item>
     </style>
 </resources>

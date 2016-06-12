@@ -21,4 +21,6 @@
     <color name="keyboard_text">#525252</color>
     <color name="keyboard_side_bg">#f2f2f2</color>
 
+    <color name="dark_green_c1">#0a2b31</color>
+    <color name="dark_green_c2">#1c6357</color>
 </resources>
