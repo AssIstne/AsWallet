@@ -15,6 +15,10 @@
     <string name="today">今天 %s</string>
     <string name="yesterday">昨天 %s</string>
 
+    <string name="drawer_expense">月支出 : </string>
+    <string name="drawer_income">月收入 : </string>
+    <string name="drawer_positive_diff">+ %s</string>
+    <string name="drawer_negative_diff">- %s</string>
     <string name="menu_title">设置</string>
     <string name="menu_analyze">统计分析</string>
     <string name="menu_cat">类别管理</string>

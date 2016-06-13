@@ -3,13 +3,10 @@ package com.assistne.aswallet.database.bean;
 import android.support.annotation.Nullable;
 import android.text.format.DateFormat;
 
-import com.orhanobut.logger.Logger;
-
 import java.util.Calendar;
 import java.util.Date;
 
 import io.realm.RealmObject;
-import io.realm.annotations.Index;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
@@ -95,6 +92,9 @@ public class Bill extends RealmObject {
         this.id = id;
     }
 
+    public boolean isIncome() {
+        return type == Bill.TYPE_INCOME;
+    }
     @Nullable
     public Tag getTag() {
         return tag;

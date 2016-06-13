@@ -21,15 +21,48 @@
         android:src="@drawable/ic_avatar"
         />
     <TextView
-        android:id="@+id/drawer_income"
+        android:id="@+id/drawer_income_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@id/drawer_avatar"
         android:layout_below="@id/drawer_avatar"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="3dp"
+        android:layout_marginEnd="5dp"
         style="@style/Material_SubHeader"
-        android:text="月收入 : 19,000"
+        android:text="@string/drawer_income"
+        android:textColor="@color/grey_800"
+        />
+    <TextView
+        android:id="@+id/drawer_expense_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/drawer_income_title"
+        android:layout_below="@id/drawer_income_title"
+        android:layout_marginEnd="5dp"
+        style="@style/Material_SubHeader"
+        android:text="@string/drawer_expense"
+        android:textColor="@color/grey_800"
+        />
+
+    <!-- 基准线的长度根据文本长度动态设置 -->
+    <View
+        android:id="@+id/drawer_guide_line"
+        android:layout_width="55dp"
+        android:layout_height="1dp"
+        android:layout_below="@id/drawer_expense_title"
+        android:layout_toEndOf="@id/drawer_expense_title"
+        android:background="@color/grey_800"
+        />
+
+    <TextView
+        android:id="@+id/drawer_income"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/drawer_income_title"
+        android:layout_alignEnd="@id/drawer_guide_line"
+        style="@style/Material_SubHeader"
+        tools:text="19,000"
         android:textColor="@color/grey_800"
         />
 
@@ -37,20 +70,11 @@
         android:id="@+id/drawer_expense"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@id/drawer_income"
-        android:layout_below="@id/drawer_income"
+        android:layout_alignEnd="@id/drawer_guide_line"
+        android:layout_alignBaseline="@id/drawer_expense_title"
         style="@style/Material_SubHeader"
-        android:text="月支出 : 16,347"
+        tools:text="16,347"
         android:textColor="@color/grey_800"
-        />
-
-    <View
-        android:id="@+id/drawer_guide_line"
-        android:layout_width="55dp"
-        android:layout_height="1dp"
-        android:layout_below="@id/drawer_expense"
-        android:layout_alignEnd="@id/drawer_expense"
-        android:background="@color/grey_800"
         />
 
     <TextView
@@ -58,9 +82,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/drawer_guide_line"
-        android:layout_alignEnd="@id/drawer_expense"
+        android:layout_alignEnd="@id/drawer_guide_line"
         style="@style/Material_SubHeader"
-        android:text="- 1,333"
+        tools:text="- 1,333"
         android:textColor="@color/grey_800"
         />
 </RelativeLayout>

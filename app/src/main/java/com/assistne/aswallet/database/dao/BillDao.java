@@ -12,4 +12,8 @@ public interface BillDao {
     Bill getBill(long id);
     void updateBill(Bill billInput);
     List<Bill> getBillList(int count);
+
+    List<Bill> getBillListByDate(long from);
+
+    List<Bill> getBillListByDate(long from, long to);
 }

@@ -12,6 +12,9 @@ import java.util.List;
 public interface HomeMvp {
     interface View {
         void showBill(List<BillModel> billList);
+        /**
+         * 显示(更新)Drawer中的月分析数据 */
+        void showShortAnalyze(float expense, float income);
         void removeBillFromList(int position);
     }
 

@@ -1,11 +1,10 @@
 package com.assistne.aswallet.database.dao;
 
-import android.util.Log;
-
 import com.assistne.aswallet.database.RealmDelegate;
 import com.assistne.aswallet.database.bean.Bill;
-import com.orhanobut.logger.Logger;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
@@ -41,5 +40,21 @@ public class BillDaoImpl implements BillDao {
             }
         }
         return res;
+    }
+
+    @Override
+    public List<Bill> getBillListByDate(long from) {
+        return getBillListByDate(from, Calendar.getInstance().getTimeInMillis());
+    }
+
+    @Override
+    public List<Bill> getBillListByDate(long from, long to) {
+        if (to < from) {
+            return null;
+        }
+        Realm realm = RealmDelegate.getInstance();
+        return realm.where(Bill.class)
+                .greaterThan(Bill.Structure.DATE, new Date(from))
+                .lessThan(Bill.Structure.DATE, new Date(to)).findAllSorted(Bill.Structure.ID, Sort.DESCENDING);
     }
 }
