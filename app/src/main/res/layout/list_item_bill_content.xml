@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:paddingStart="@dimen/material_margin_16"
+    android:paddingEnd="@dimen/material_margin_16"
+    android:paddingTop="@dimen/material_margin_16"
+    android:paddingBottom="@dimen/material_margin_16"
+    >
+
+    <ImageView
+        android:id="@+id/list_item_img_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:src="@drawable/ic_food"
+        android:layout_centerVertical="true"
+        />
+
+    <TextView
+        android:id="@+id/list_item_text_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/text_margin_start"
+        android:layout_alignTop="@id/list_item_img_icon"
+        style="@style/Material_SubHeader"
+        android:textSize="16sp"
+        android:maxLength="22"
+        tools:text="STARBUCKS"
+        />
+
+    <TextView
+        android:id="@+id/list_item_text_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/text_margin_start"
+        android:layout_below="@id/list_item_text_description"
+        android:textSize="14sp"
+        style="@style/Material_Body1"
+        tools:text="10 minutes ago, 6:29 AM"
+        />
+
+    <TextView
+        android:id="@+id/list_item_text_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        style="@style/Material_SubHeader"
+        tools:text="$23.30"
+        />
+</RelativeLayout>

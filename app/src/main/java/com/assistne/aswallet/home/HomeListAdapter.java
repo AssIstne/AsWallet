@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,6 +14,9 @@ import com.assistne.aswallet.R;
 import com.assistne.aswallet.component.MyApplication;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.tools.FormatUtils;
+import com.orhanobut.logger.Logger;
+import com.tubb.smrv.SwipeMenuLayout;
+import com.tubb.smrv.listener.SimpleSwipeSwitchListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +78,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (mData != null) {
             BillModel bill = mData.get(position);
+            holder.itemView.setSelected(true);
             holder.imgIcon.setImageResource(bill.getCategoryIconRes());
             holder.tvDate.setText(FormatUtils.dateToText(bill.getDate().getTime()));
             if (!TextUtils.isEmpty(bill.getDescription())) {

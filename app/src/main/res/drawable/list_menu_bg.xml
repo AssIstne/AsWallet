@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!-- background color -->
+    <item
+        android:bottom="3px"
+        android:left="3px"
+        android:right="3px"
+        android:top="3px">
+        <shape android:shape="rectangle" >
+            <solid android:color="@color/list_delete_bg" />
+        </shape>
+    </item>
+    <!-- over left shadow -->
+    <item
+        android:top="@dimen/list_menu_bg_shadow_width"
+        android:right="@dimen/list_menu_bg_shadow_width"
+        android:bottom="@dimen/list_menu_bg_shadow_width">
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="180"
+                android:centerX="0.9"
+                android:endColor="@android:color/white"
+                android:startColor="@color/list_delete_bg_border"
+                />
+        </shape>
+    </item>
+    <!-- over right shadow -->
+    <item
+        android:left="@dimen/list_menu_bg_shadow_width"
+        android:top="@dimen/list_menu_bg_shadow_width"
+        android:bottom="@dimen/list_menu_bg_shadow_width">
+        <shape android:shape="rectangle" >
+            <gradient
+                android:angle="360"
+                android:centerX="0.9"
+                android:centerColor="@color/green_700"
+                android:endColor="@android:color/white"
+                android:startColor="@color/list_delete_bg_border"
+                />
+            <size android:width="3px"/>
+        </shape>
+    </item>
+    <!-- over top shadow -->
+    <item
+        android:left="@dimen/list_menu_bg_shadow_width"
+        android:right="@dimen/list_menu_bg_shadow_width"
+        android:bottom="@dimen/list_menu_bg_shadow_width"
+        >
+        <shape android:shape="rectangle" >
+            <gradient
+                android:angle="-90"
+                android:centerY="0.9"
+                android:endColor="@android:color/white"
+                android:startColor="@color/list_delete_bg_border"
+                android:type="linear" />
+            <size android:width="3px"/>
+        </shape>
+    </item>
+    <!-- over bottom shadow -->
+    <item
+        android:left="@dimen/list_menu_bg_shadow_width"
+        android:top="@dimen/list_menu_bg_shadow_width"
+        android:right="@dimen/list_menu_bg_shadow_width"
+        >
+        <shape android:shape="rectangle" >
+            <gradient
+                android:angle="90"
+                android:centerY="0.7"
+                android:centerColor="@color/green_700"
+                android:endColor="@android:color/white"
+                android:startColor="@color/list_delete_bg_border"
+                android:type="linear" />
+            <size android:width="3px"/>
+        </shape>
+    </item>
+</layer-list>

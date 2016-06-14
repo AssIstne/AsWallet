@@ -37,8 +37,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         if (mDivider == null) { super.onDrawOver(c, parent, state); return; }
 
         if (getOrientation(parent) == LinearLayoutManager.VERTICAL) {
-            final int left = parent.getPaddingLeft() + (int)parent.getResources().getDimension(R.dimen.text_margin_start);
-            final int right = parent.getWidth() - parent.getPaddingRight() - (int)parent.getResources().getDimension(R.dimen.material_margin_16);
+            final int left = 0;
+            final int right = parent.getWidth() - parent.getPaddingRight();
             final int childCount = parent.getChildCount();
 
             for (int i=0; i < childCount; i++) {
