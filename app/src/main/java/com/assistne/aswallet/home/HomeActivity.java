@@ -192,21 +192,21 @@ public class HomeActivity extends BaseActivity implements HomeMvp.View {
         mExpenseTxt.setText(FormatUtils.moneyText(expense));
         mIncomeTxt.setText(FormatUtils.moneyText(income));
         if (expense == income) { // 相等时不显示差值
-            mGuideLine.setVisibility(View.GONE);
-            mDifferenceTxt.setVisibility(View.GONE);
+            mGuideLine.setVisibility(View.INVISIBLE);
+            mDifferenceTxt.setVisibility(View.INVISIBLE);
         } else {
             mGuideLine.setVisibility(View.VISIBLE);
             mDifferenceTxt.setVisibility(View.VISIBLE);
             mDifferenceTxt.setText(getResources().getString(
                     expense > income ? R.string.drawer_negative_diff : R.string.drawer_positive_diff,
                     FormatUtils.moneyText(Math.abs(income - expense))));
-            /** 根据文本长度调整{@link #mGuideLine}长度, 3个TextView尾端对齐{@link #mGuideLine} */
-            RelativeLayout.LayoutParams lineParams = (RelativeLayout.LayoutParams) mGuideLine.getLayoutParams();
-            // 动态设置长度
-            TextView target = expense > income ? mExpenseTxt : mIncomeTxt;
-            target.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-            lineParams.width = target.getMeasuredWidth();
         }
+        /** 根据文本长度调整{@link #mGuideLine}长度, 3个TextView尾端对齐{@link #mGuideLine} */
+        RelativeLayout.LayoutParams lineParams = (RelativeLayout.LayoutParams) mGuideLine.getLayoutParams();
+        // 动态设置长度
+        TextView target = expense > income ? mExpenseTxt : mIncomeTxt;
+        target.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        lineParams.width = target.getMeasuredWidth();
     }
 
     @Override
