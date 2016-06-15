@@ -31,7 +31,9 @@ public class BillDaoImpl implements BillDao {
     @Override
     public List<Bill> getBillList(int count) {
         Realm realm = RealmDelegate.getInstance();
-        List<Bill> res = realm.where(Bill.class).findAllSorted(Bill.Structure.ID, Sort.DESCENDING);
+        List<Bill> res = realm.where(Bill.class)
+                .notEqualTo(Bill.Structure.SOFT_DELETE, true)
+                .findAllSorted(Bill.Structure.ID, Sort.DESCENDING);
         if (count > 0) {
             int size = res.size();
             if (size > count) {
@@ -54,7 +56,50 @@ public class BillDaoImpl implements BillDao {
         }
         Realm realm = RealmDelegate.getInstance();
         return realm.where(Bill.class)
+                .notEqualTo(Bill.Structure.SOFT_DELETE, true)
                 .greaterThan(Bill.Structure.DATE, new Date(from))
                 .lessThan(Bill.Structure.DATE, new Date(to)).findAllSorted(Bill.Structure.ID, Sort.DESCENDING);
+    }
+
+    @Override
+    public boolean deleteBill(long id) {
+        Realm realm = RealmDelegate.getInstance();
+        Bill bill = realm.where(Bill.class).equalTo(Bill.Structure.ID, id).findFirst();
+        if (bill == null) {
+            return false;
+        } else {
+            realm.beginTransaction();
+            bill.deleteFromRealm();
+            realm.commitTransaction();
+            return true;
+        }
+    }
+
+    @Override
+    public boolean softDeleteBill(long id) {
+        Realm realm = RealmDelegate.getInstance();
+        Bill bill = realm.where(Bill.class).equalTo(Bill.Structure.ID, id).findFirst();
+        if (bill == null) {
+            return false;
+        } else {
+            realm.beginTransaction();
+            bill.setSoftDelete(true);
+            realm.commitTransaction();
+            return true;
+        }
+    }
+
+    @Override
+    public boolean restoreBill(long id) {
+        Realm realm = RealmDelegate.getInstance();
+        Bill bill = realm.where(Bill.class).equalTo(Bill.Structure.ID, id).findFirst();
+        if (bill == null) {
+            return false;
+        } else {
+            realm.beginTransaction();
+            bill.setSoftDelete(false);
+            realm.commitTransaction();
+            return true;
+        }
     }
 }

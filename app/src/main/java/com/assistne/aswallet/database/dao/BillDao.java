@@ -16,4 +16,9 @@ public interface BillDao {
     List<Bill> getBillListByDate(long from);
 
     List<Bill> getBillListByDate(long from, long to);
+    boolean deleteBill(long id);
+
+    boolean softDeleteBill(long id);
+
+    boolean restoreBill(long id);
 }

@@ -7,7 +7,6 @@ import com.assistne.aswallet.database.dao.BillDao;
 import com.assistne.aswallet.database.dao.BillDaoImpl;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.model.ModelTool;
-import com.orhanobut.logger.Logger;
 
 import java.util.Calendar;
 
@@ -25,8 +24,24 @@ public class HomePresenter implements HomeMvp.Presenter {
     }
 
     @Override
-    public void deleteBillFromDataBase() {
+    public void deleteBillFromDataBase(long billId, int position) {
+        mBillDao.deleteBill(billId);
+    }
 
+    @Override
+    public void softDeleteBill(long billId, int position) {
+        if (mBillDao.softDeleteBill(billId)) {
+            mView.removeBillFromList(position);
+            updateMonthDetail();
+        }
+    }
+
+    @Override
+    public void restoreBill(BillModel billModel, int position) {
+        if (mBillDao.restoreBill(billModel.getId())) {
+            mView.insertBillToList(position, billModel);
+            updateMonthDetail();
+        }
     }
 
     @Override
@@ -37,6 +52,12 @@ public class HomePresenter implements HomeMvp.Presenter {
     @Override
     public void onResume() {
         mView.showBill(ModelTool.convertBillList(mBillDao.getBillList(10)));
+        updateMonthDetail();
+    }
+
+    // TODO: 16/6/15 删除恢复都重新获取, 可以优化
+    /** 更新Drawer中的月总支出收入 */
+    private void updateMonthDetail() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         calendar.set(Calendar.HOUR_OF_DAY, 0);

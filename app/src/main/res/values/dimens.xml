@@ -10,6 +10,4 @@
     <!-- 首页列表 -->
     <dimen name="text_margin_start">56dp</dimen>
     <dimen name="list_swipe_distance">56dp</dimen>
-
-    <dimen name="list_menu_bg_shadow_width">3px</dimen>
 </resources>

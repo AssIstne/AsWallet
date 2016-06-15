@@ -26,6 +26,7 @@ public class Bill extends RealmObject {
         String DATE = "date";
         String TYPE = "type";
         String PRICE = "price";
+        String SOFT_DELETE = "softDelete";
     }
 
     @PrimaryKey
@@ -37,6 +38,8 @@ public class Bill extends RealmObject {
     private Date date;
     private int type;
     private float price;
+    /** 用来标记软删除 */
+    private boolean softDelete;
 
     public Bill() {
         date = new Date(Calendar.getInstance().getTimeInMillis());
@@ -104,6 +107,14 @@ public class Bill extends RealmObject {
         this.tag = tag;
     }
 
+    public boolean isSoftDelete() {
+        return softDelete;
+    }
+
+    public void setSoftDelete(boolean hasSoftDelete) {
+        this.softDelete = hasSoftDelete;
+    }
+
     @Override
     public String toString() {
         return super.toString() + "\n\tid   : " + id + "" +
@@ -112,6 +123,7 @@ public class Bill extends RealmObject {
                 "\n\ttag  : " + (tag == null ? "no-tag" : tag.getName()) +
                 "\n\tdate : " + DateFormat.format("yyyy-MM-dd HH:mm:ss", date) +
                 "\n\ttype : " + (type == TYPE_INCOME ? "income" : "expense") +
-                "\n\tdes  : " + description ;
+                "\n\tdes  : " + description +
+                "\n\tsoft delete : " + softDelete ;
     }
 }

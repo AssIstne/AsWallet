@@ -2,8 +2,10 @@ package com.assistne.aswallet.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,8 +20,7 @@ import com.assistne.aswallet.billdetail.BillDetailActivity;
 import com.assistne.aswallet.component.BaseActivity;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.tools.FormatUtils;
-import com.orhanobut.logger.Logger;
-import com.tubb.smrv.SwipeMenuRecyclerView;
+import com.tubb.smrv.SwipeMenuLayout;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class HomeActivity extends BaseActivity implements HomeMvp.View {
+    @Bind(R.id.home_span_container) CoordinatorLayout mContainer;
     @Bind(R.id.home_btn_fab) FloatingActionButton mFab;
     @Bind(R.id.home_list) RecyclerView mRecyclerView;
     @Bind(R.id.toolbar) Toolbar mToolbar;
@@ -77,10 +79,19 @@ public class HomeActivity extends BaseActivity implements HomeMvp.View {
         mAdapter = new HomeListAdapter();
         mAdapter.setItemClickListener(new HomeListAdapter.ItemClickListener() {
             @Override
-            public void onClick(long billId) {
+            public void onItemClick(int position) {
                 Intent intent = new Intent(HomeActivity.this, BillDetailActivity.class);
-                intent.putExtra(BillDetailActivity.KEY_BILL_ID, billId);
+                intent.putExtra(BillDetailActivity.KEY_BILL_ID, mAdapter.getItemId(position));
                 startActivity(intent);
+            }
+
+            @Override
+            public void onMenuClick(View v) {
+                final int position = (int) v.getTag();
+                // 软删除
+                mPresenter.softDeleteBill(mAdapter.getItemId(position), position);
+                // item移除时重置menu的状态
+                ((SwipeMenuLayout)v.getParent()).smoothCloseMenu(50);
             }
         });
 
@@ -125,7 +136,24 @@ public class HomeActivity extends BaseActivity implements HomeMvp.View {
     }
 
     @Override
-    public void removeBillFromList(int position) {
+    public void removeBillFromList(final int position) {
+        // 在视图中删除item
+        final BillModel removedBill = mAdapter.remove(position);
+        // 显示撤销提示
+        Snackbar snackbar = Snackbar.make(mContainer, R.string.msg_undo_delete_bill, Snackbar.LENGTH_SHORT);
+        snackbar.setAction(R.string.global_undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 恢复被软删除的item
+                mPresenter.restoreBill(removedBill, position);
+            }
+        });
+        snackbar.show();
+    }
 
+    @Override
+    public void insertBillToList(int position, BillModel billModel) {
+        // 恢复显示item
+        mAdapter.insert(position, billModel);
     }
 }

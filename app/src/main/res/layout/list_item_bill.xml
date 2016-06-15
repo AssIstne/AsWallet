@@ -4,9 +4,9 @@
     android:id="@+id/sml"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    sml:sml_scroller_interpolator="@android:anim/bounce_interpolator"
+    sml:sml_scroller_interpolator="@android:anim/accelerate_interpolator"
     sml:sml_auto_open_percent="0.5"
-    sml:sml_scroller_duration="250"
+    sml:sml_scroller_duration="100"
     >
 
     <include android:id="@id/smContentView" layout="@layout/list_item_bill_content"/>

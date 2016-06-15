@@ -16,10 +16,13 @@ public interface HomeMvp {
          * 显示(更新)Drawer中的月分析数据 */
         void showShortAnalyze(float expense, float income);
         void removeBillFromList(int position);
+        void insertBillToList(int position, BillModel billModel);
     }
 
     interface Presenter extends BaseMvp.Presenter {
-        void deleteBillFromDataBase();
+        void deleteBillFromDataBase(long billId, int position);
+        void softDeleteBill(long billId, int position);
+        void restoreBill(BillModel billModel, int position);
         BillModel getBill(int id);
     }
 }

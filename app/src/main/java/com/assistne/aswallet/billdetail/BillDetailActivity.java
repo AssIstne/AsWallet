@@ -226,7 +226,7 @@ public class BillDetailActivity extends BaseActivity implements BillMvp.View, Vi
             }
             mBillInfoFragment.setPriceText(FormatUtils.moneyText(priceF));
         } else {
-            Toast.makeText(BillDetailActivity.this, R.string.overflow_msg, Toast.LENGTH_SHORT).show();
+            Toast.makeText(BillDetailActivity.this, R.string.msg_price_overflow, Toast.LENGTH_SHORT).show();
         }
     }
 

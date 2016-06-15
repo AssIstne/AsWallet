@@ -1,12 +1,13 @@
 package com.assistne.aswallet.home;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,9 +15,7 @@ import com.assistne.aswallet.R;
 import com.assistne.aswallet.component.MyApplication;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.tools.FormatUtils;
-import com.orhanobut.logger.Logger;
 import com.tubb.smrv.SwipeMenuLayout;
-import com.tubb.smrv.listener.SimpleSwipeSwitchListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,18 +37,24 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
         @Bind(R.id.list_item_text_date) public TextView tvDate;
         @Bind(R.id.list_item_text_description) public TextView tvDescription;
         @Bind(R.id.list_item_text_price) public TextView tvPrice;
+        @Bind(R.id.smMenuViewRight) public ImageButton btnDelete;
 
         public ViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
             v.setOnClickListener(HomeListAdapter.this);
+            btnDelete.setOnClickListener(HomeListAdapter.this);
         }
     }
 
     @Override
     public void onClick(View v) {
         if (mListener != null) {
-            mListener.onClick((long) v.getTag());
+            if (v.getId() == R.id.smMenuViewRight) {
+                mListener.onMenuClick(v);
+            } else {
+                mListener.onItemClick((int) v.getTag());
+            }
         }
     }
 
@@ -74,6 +79,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
     }
 
 
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (mData != null) {
@@ -91,7 +97,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
             holder.tvPrice.setText(String.format(
                     MyApplication.getStaticContext().getString(bill.isIncome() ? R.string.income_money : R.string.global_CNY_ZH),
                     FormatUtils.moneyText(bill.getPrice())));
-            holder.itemView.setTag(bill.getId());
+            holder.itemView.setTag(position);
+            holder.btnDelete.setTag(position);
         }
     }
 
@@ -100,17 +107,38 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
         return mData.size();
     }
 
+    @Override
+    public long getItemId(int position) {
+        if (mData == null || position >= mData.size()) {
+            return super.getItemId(position);
+        }
+        return mData.get(position).getId();
+    }
+
     public void setItemClickListener(ItemClickListener listener) {
         mListener = listener;
     }
 
     public interface ItemClickListener {
-        void onClick(long billId);
+        /**
+         * 使用{@link android.support.v7.widget.RecyclerView.Adapter#getItemId(int)}来通过position获取billId */
+        void onItemClick(int position);
+        void onMenuClick(View view);
     }
 
-    public void remove(int position) {
-        mData.get(position);
-        mData.remove(position);
+    @NonNull
+    public BillModel remove(int position) {
+        BillModel billModel = mData.remove(position);
         notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mData.size());
+        return billModel;
     }
+
+    public void insert(int position, @NonNull BillModel billModel) {
+        mData.add(position, billModel);
+        notifyItemInserted(position);
+        notifyItemRangeChanged(position, mData.size());
+    }
+
+
 }

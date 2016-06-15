@@ -26,7 +26,8 @@
     <color name="dark_green_c1">#0a2b31</color>
     <color name="dark_green_c2">#1c6357</color>
 
-    <color name="list_delete_bg">#e7e7e7</color>
-    <color name="list_delete_bg_border">#b7b7b7</color>
+    <color name="list_delete_bg">#efefef</color>
+    <color name="inner_shadow_start">#b7b7b7</color>
+
     <color name="list_delete_tint">#6a6a6a</color>
 </resources>
