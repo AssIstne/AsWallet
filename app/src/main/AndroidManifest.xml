@@ -11,6 +11,7 @@
         <activity
             android:name=".home.HomeActivity"
             android:theme="@style/AppTheme.Home"
+            android:screenOrientation="portrait"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,6 +20,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".billdetail.BillDetailActivity"
+            android:windowSoftInputMode="adjustNothing|stateUnspecified"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".category.EditCategoryActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing|stateUnspecified"
             />
     </application>

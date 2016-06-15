@@ -11,12 +11,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.assistne.aswallet.R;
 import com.assistne.aswallet.billdetail.BillDetailActivity;
+import com.assistne.aswallet.category.EditCategoryActivity;
 import com.assistne.aswallet.component.BaseActivity;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.tools.FormatUtils;
@@ -72,6 +74,32 @@ public class HomeActivity extends BaseActivity implements HomeMvp.View {
             }
         });
         initList();
+        initNavigation();
+    }
+
+    private void initNavigation() {
+        mNavigationSpan.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_menu_item_analyze:
+                        break;
+                    case R.id.navigation_menu_item_category:
+                        startActivity(new Intent(HomeActivity.this, EditCategoryActivity.class));
+                        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
+                        break;
+                    case R.id.navigation_menu_item_tag:
+                        break;
+                    case R.id.navigation_menu_item_notification:
+                        break;
+                    case R.id.navigation_menu_item_schedule:
+                        break;
+                    case R.id.navigation_menu_item_about:
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     /** 初始化列表 */
