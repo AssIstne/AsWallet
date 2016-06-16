@@ -7,6 +7,8 @@
     <dimen name="font_size_sub_header">16sp</dimen>
     <dimen name="font_size_body">14sp</dimen>
 
+    <dimen name="font_size_list_item">16sp</dimen>
+
     <!-- 首页列表 -->
     <dimen name="text_margin_start">56dp</dimen>
     <dimen name="list_swipe_distance">56dp</dimen>

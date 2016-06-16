@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:background="@drawable/ripple_list_item_bg">
+
+    <ImageView
+        android:id="@+id/list_item_edit_cat_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/material_margin_16"
+        android:layout_centerVertical="true"
+        tools:src="@drawable/ic_entertainment"
+        />
+
+    <TextView
+        android:id="@+id/list_item_edit_cat_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="72dp"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/font_size_list_item"
+        tools:text="娱乐"
+        />
+
+    <CheckBox
+        android:id="@+id/list_item_edit_cat_cbx_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/material_margin_16"
+        android:button="@drawable/selector_cbx"
+        android:buttonTint="@color/selector_cbx_tint"
+        android:checked="false"
+        />
+</RelativeLayout>

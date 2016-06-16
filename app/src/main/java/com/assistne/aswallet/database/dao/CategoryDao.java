@@ -15,5 +15,10 @@ public interface CategoryDao {
     List<Category> getExpenseCategoryList(int count);
 
     Category getDefaultCategory();
+    /** 手动增加{@link com.assistne.aswallet.database.bean.Category.Structure#COUNT} */
     Category increaseCategory(long id);
+
+    boolean deleteCategory(long id);
+    boolean softDeleteCategory(long id);
+
 }

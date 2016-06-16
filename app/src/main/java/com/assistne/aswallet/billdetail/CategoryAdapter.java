@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.assistne.aswallet.R;
 import com.assistne.aswallet.model.CategoryModel;
-import com.assistne.aswallet.model.ModelTool;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;

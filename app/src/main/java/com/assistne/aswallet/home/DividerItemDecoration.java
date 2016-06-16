@@ -2,16 +2,13 @@ package com.assistne.aswallet.home;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.util.AttributeSet;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.view.View;
+import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.graphics.Canvas;
-
-import com.assistne.aswallet.R;
-import com.orhanobut.logger.Logger;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
+import android.view.View;
 
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 

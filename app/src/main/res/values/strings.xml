@@ -8,6 +8,7 @@
     <string name="global_CNY_ZH">%s 元</string>
     <string name="income_money">+ %s 元</string>
     <string name="global_undo">UNDO</string>
+    <string name="global_delete">删除</string>
 
     <string name="income">收入</string>
     <string name="expense">支出</string>
@@ -32,4 +33,7 @@
 
     <string name="msg_price_overflow">不能再多了~土豪!我们做朋友吧!（¯﹃¯）口水</string>
     <string name="msg_undo_delete_bill">撤销删除?</string>
+    <string name="msg_success_delete_cat">删除成功!</string>
+
+    <string name="alert_cat_select_nothing">没有选中任何东东~</string>
 </resources>

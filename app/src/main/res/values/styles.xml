@@ -2,7 +2,7 @@
 <resources>
     <!-- 基础主题 -->
     <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@color/light_green_700</item>
+        <item name="colorPrimary">@color/green_700</item>
         <item name="colorPrimaryDark">@color/light_green_900</item>
         <item name="android:windowBackground">@color/grey_50</item>
     </style>

@@ -1,7 +1,5 @@
 package com.assistne.aswallet.billdetail;
 
-import com.assistne.aswallet.database.bean.Bill;
-import com.assistne.aswallet.database.bean.Category;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.model.CategoryModel;
 import com.assistne.aswallet.model.TagModel;

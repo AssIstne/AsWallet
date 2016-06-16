@@ -1,7 +1,6 @@
 package com.assistne.aswallet.home;
 
 import com.assistne.aswallet.component.BaseMvp;
-import com.assistne.aswallet.database.bean.Bill;
 import com.assistne.aswallet.model.BillModel;
 
 import java.util.List;

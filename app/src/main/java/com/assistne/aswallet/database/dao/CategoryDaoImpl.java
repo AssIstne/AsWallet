@@ -22,6 +22,7 @@ public class CategoryDaoImpl implements CategoryDao {
     public List<Category> getExpenseCategoryList(int count) {
         Realm realm = RealmDelegate.getInstance();
         List<Category> res = realm.where(Category.class).equalTo(Category.Structure.TYPE, Category.TYPE_EXPENSE)
+                .notEqualTo(Category.Structure.SOFT_DELETE, true)
                 .findAllSorted(Category.Structure.ID, Sort.ASCENDING);
         if (count > 0) {
             int size = res.size();
@@ -39,6 +40,7 @@ public class CategoryDaoImpl implements CategoryDao {
         Realm realm = RealmDelegate.getInstance();
         List<Category> res = realm.where(Category.class).equalTo(Category.Structure.TYPE, Category.TYPE_EXPENSE)
                 .notEqualTo(Category.Structure.ID, Category.Type.INCOME)
+                .notEqualTo(Category.Structure.SOFT_DELETE, true)
                 .findAllSorted(Category.Structure.COUNT, Sort.DESCENDING);
         return res.get(0);
     }
@@ -53,4 +55,29 @@ public class CategoryDaoImpl implements CategoryDao {
         realm.commitTransaction();
         return category;
     }
+
+    @Override
+    public boolean deleteCategory(long id) {
+        if (id == -1) {
+            Realm realm = RealmDelegate.getInstance();
+            realm.beginTransaction();
+            for(Category category : realm.where(Category.class).findAll()) {
+                category.setSoftDelete(false);
+            }
+            realm.commitTransaction();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean softDeleteCategory(long id) {
+        Realm realm = RealmDelegate.getInstance();
+        realm.beginTransaction();
+        Category category = realm.where(Category.class).equalTo(Category.Structure.ID, id).findFirst();
+        category.setSoftDelete(true);
+        realm.commitTransaction();
+        return true;
+    }
+
+
 }

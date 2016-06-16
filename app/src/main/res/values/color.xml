@@ -20,6 +20,10 @@
     <color name="green_700">#388E3C</color>
     <color name="green_500">#4CAF50</color>
 
+    <color name="teal_500">#009688</color>
+    <color name="cbx_tint_disable">#42000000</color>
+    <color name="cbx_tint_unchecked">#89000000</color>
+
     <color name="keyboard_text">#525252</color>
     <color name="keyboard_side_bg">#f2f2f2</color>
 

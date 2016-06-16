@@ -1,9 +1,6 @@
 package com.assistne.aswallet.database.bean;
 
-import com.assistne.aswallet.database.PrimaryKeyFactory;
-
 import io.realm.RealmObject;
-import io.realm.annotations.Index;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -21,6 +18,7 @@ public class Category extends RealmObject {
         String ACTIVATE = "isActivate";
         String ICON = "iconType";
         String COUNT = "count";
+        String SOFT_DELETE = "softDelete";
     }
 
     public interface Type {
@@ -42,6 +40,16 @@ public class Category extends RealmObject {
     private boolean isActivate;
     private int iconType;
     private long count;
+
+    public boolean isSoftDelete() {
+        return softDelete;
+    }
+
+    public void setSoftDelete(boolean softDelete) {
+        this.softDelete = softDelete;
+    }
+
+    private boolean softDelete;
 
     public Category(){
         name = "undefine";

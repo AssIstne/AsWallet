@@ -1,7 +1,6 @@
 package com.assistne.aswallet.home;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import com.assistne.aswallet.R;
 import com.assistne.aswallet.component.MyApplication;
 import com.assistne.aswallet.model.BillModel;
 import com.assistne.aswallet.tools.FormatUtils;
-import com.tubb.smrv.SwipeMenuLayout;
 
 import java.util.ArrayList;
 import java.util.List;

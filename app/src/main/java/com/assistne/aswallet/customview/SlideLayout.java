@@ -3,7 +3,6 @@ package com.assistne.aswallet.customview;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 /**

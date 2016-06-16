@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/edit_category_span_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_50"
+    android:fitsSystemWindows="true"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
 
-</LinearLayout>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
+            app:title="@string/menu_cat"
+            app:titleTextColor="@color/grey_50"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/edit_category_rcv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            />
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/edit_category_btn_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_add_black_24dp"
+        app:layout_anchor="@id/edit_category_rcv"
+        app:layout_anchorGravity="bottom|right|end"
+        app:backgroundTint="@color/float_action_button"
+        app:rippleColor="@color/grey_500"
+        />
+</android.support.design.widget.CoordinatorLayout>

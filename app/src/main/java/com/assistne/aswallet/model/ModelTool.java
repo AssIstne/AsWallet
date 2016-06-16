@@ -7,12 +7,11 @@ import android.support.annotation.Nullable;
 import com.assistne.aswallet.R;
 import com.assistne.aswallet.database.bean.Bill;
 import com.assistne.aswallet.database.bean.Category;
+import com.assistne.aswallet.database.bean.Tag;
+import com.assistne.aswallet.tools.PreCondition;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.assistne.aswallet.database.bean.Tag;
-import com.assistne.aswallet.tools.PreCondition;
 
 /**
  * 数据库类和视图展示类之间的转换工具
@@ -23,6 +22,7 @@ public class ModelTool {
         BillModel model = new BillModel();
         model.setId(bill.getId());
         Category category = bill.getCategory();
+        // TODO: 16/6/16 如果用户自己删除了Category怎么办?
         PreCondition.checkNotNull(category);
         model.setCategoryName(category.getName());
         model.setCategoryId(category.getId());
