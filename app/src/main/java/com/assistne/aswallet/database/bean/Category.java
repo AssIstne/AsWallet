@@ -31,6 +31,7 @@ public class Category extends RealmObject {
         int TRAFFIC = 7;
         int SOCIAL = 8;
         int SHOPPING = 9;
+        int OTHER = 10;
     }
 
     @PrimaryKey

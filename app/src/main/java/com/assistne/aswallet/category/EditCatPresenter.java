@@ -25,7 +25,8 @@ public class EditCatPresenter implements EditCatMvp.Presenter {
 
     @Override
     public void addOrUpdateCategory(CategoryModel categoryModel) {
-
+        mCatDao.updateCategory(ModelTool.convert(categoryModel));
+        mView.insertCategory(categoryModel);
     }
 
     @Override
@@ -51,6 +52,6 @@ public class EditCatPresenter implements EditCatMvp.Presenter {
 
     @Override
     public void onResume() {
-        mView.showCategoryList(ModelTool.convertCategoryList(mCatDao.getExpenseCategoryList(-1)));
+        mView.showCategoryList(ModelTool.convertCategoryList(mCatDao.getExpenseCategoryListIdDesc(-1)));
     }
 }

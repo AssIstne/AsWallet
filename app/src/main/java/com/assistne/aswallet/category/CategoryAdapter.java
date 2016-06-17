@@ -64,9 +64,7 @@ public class CategoryAdapter extends RecyclerView.Adapter implements
             holder.selectCbx.animate().alpha(0).start();
             holder.selectCbx.setVisibility(View.INVISIBLE);
         }
-        if (category.getId() < 4) {
-            holder.selectCbx.setEnabled(false);
-        }
+        holder.selectCbx.setEnabled(category.isEditable());
     }
 
     public void setData(List<CategoryModel> data) {
@@ -103,7 +101,14 @@ public class CategoryAdapter extends RecyclerView.Adapter implements
             mData.remove(position);
             notifyItemRemoved(position);
         }
-        notifyItemRangeChanged(positionList.get(0), positionList.size());
+        notifyItemRangeChanged(positionList.get(0), mData.size());
+    }
+
+    public void insert(int position, CategoryModel model) {
+        position = position < 0 || position >= mData.size() ? mData.size() : position;
+        mData.add(position, model);
+        notifyItemInserted(position);
+        notifyItemRangeChanged(position, mData.size());
     }
 
     @Override
@@ -163,6 +168,8 @@ public class CategoryAdapter extends RecyclerView.Adapter implements
         return mSelectArray.size() > 0;
     }
 
+    /**
+     * key是在{@link #mData}的position, value是对应的{@link CategoryModel#getId()} */
     @NonNull
     public SparseLongArray getSelectedList() {
         SparseLongArray list = new SparseLongArray();

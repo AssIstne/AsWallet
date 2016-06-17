@@ -45,7 +45,7 @@ public class ModelTool {
         model.setName(category.getName());
         model.setType(category.getType());
         model.setActivate(category.isActivate());
-        model.setIconRes(convertIconType(category.getIconType()));
+        model.setIconType(category.getIconType());
         return model;
     }
 
@@ -61,6 +61,17 @@ public class ModelTool {
             bill.setTag(tag);
         }
         return bill;
+    }
+
+    /** 没有设置softDelete, 默认false*/
+    public static Category convert(@NonNull CategoryModel model) {
+        Category category = new Category();
+        category.setId(model.getId());
+        category.setName(model.getName());
+        category.setActivate(model.isActivate());
+        category.setType(model.getType());
+        category.setIconType(model.getIconType());
+        return category;
     }
 
     public static List<BillModel> convertBillList(@NonNull List<Bill> billList) {
@@ -98,24 +109,28 @@ public class ModelTool {
     }
 
     @DrawableRes
-    private static int convertIconType(int type) {
+    public static int convertIconType(int type) {
         switch (type) {
-            case 0:
+            case Category.Type.FOOD:
                 return R.drawable.ic_food;
-            case 1:
+            case Category.Type.ENTERTAINMENT:
                 return R.drawable.ic_entertainment;
-            case 2:
+            case Category.Type.HOSPITAL:
                 return R.drawable.ic_hospital;
-            case 3:
+            case Category.Type.EDUCATION:
                 return R.drawable.ic_education;
-            case 4:
+            case Category.Type.TRAVEL:
                 return R.drawable.ic_travel;
-            case 5:
+            case Category.Type.TRAFFIC:
                 return R.drawable.ic_traffic;
-            case 6:
+            case Category.Type.SOCIAL:
                 return R.drawable.ic_social;
-            case 8:
+            case Category.Type.SHOPPING:
+                return R.drawable.ic_shopping;
+            case Category.Type.INCOME:
                 return R.drawable.ic_income;
+            case Category.Type.OTHER:
+                return R.drawable.ic_normal;
             default:
                 return R.drawable.ic_normal;
         }

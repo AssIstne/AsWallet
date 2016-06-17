@@ -7,11 +7,12 @@
     android:layout_height="match_parent"
     android:background="@color/grey_50"
     android:fitsSystemWindows="true"
+    android:clipToPadding="false"
     >
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:clipToPadding="false"
         >
 
         <android.support.v7.widget.Toolbar
@@ -28,21 +29,43 @@
             android:id="@+id/edit_category_rcv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@id/toolbar"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             />
-    </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/edit_category_btn_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:src="@drawable/ic_add_black_24dp"
-        app:layout_anchor="@id/edit_category_rcv"
-        app:layout_anchorGravity="bottom|right|end"
-        app:backgroundTint="@color/float_action_button"
-        app:rippleColor="@color/grey_500"
-        />
+        <LinearLayout
+            android:id="@+id/edit_category_span_add"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:layout_below="@id/toolbar"
+            android:layout_marginStart="@dimen/material_margin_16"
+            android:layout_marginEnd="@dimen/material_margin_16"
+            android:layout_marginTop="8dp"
+            android:background="@color/grey_50"
+            android:elevation="2dp"
+            android:alpha="0"
+            android:visibility="invisible"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_normal"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/material_margin_16"
+                />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edit_category_edt_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="@dimen/material_margin_16"
+                android:layout_gravity="center_vertical"
+                android:hint="@string/hint_enter_cat_name"
+                />
+        </LinearLayout>
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

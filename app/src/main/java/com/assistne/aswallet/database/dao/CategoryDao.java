@@ -13,6 +13,9 @@ public interface CategoryDao {
     /**
      * @param count 取出的数量, -1表示全部*/
     List<Category> getExpenseCategoryList(int count);
+    /**
+    * @param count 取出的数量, -1表示全部*/
+    List<Category> getExpenseCategoryListIdDesc(int count);
 
     Category getDefaultCategory();
     /** 手动增加{@link com.assistne.aswallet.database.bean.Category.Structure#COUNT} */
@@ -20,5 +23,6 @@ public interface CategoryDao {
 
     boolean deleteCategory(long id);
     boolean softDeleteCategory(long id);
+    void updateCategory(Category category);
 
 }

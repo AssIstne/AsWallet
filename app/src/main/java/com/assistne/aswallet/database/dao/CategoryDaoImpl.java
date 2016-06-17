@@ -34,6 +34,22 @@ public class CategoryDaoImpl implements CategoryDao {
         return res;
     }
 
+    @Override
+    public List<Category> getExpenseCategoryListIdDesc(int count) {
+        Realm realm = RealmDelegate.getInstance();
+        List<Category> res = realm.where(Category.class).equalTo(Category.Structure.TYPE, Category.TYPE_EXPENSE)
+                .notEqualTo(Category.Structure.SOFT_DELETE, true)
+                .findAllSorted(Category.Structure.ID, Sort.DESCENDING);
+        if (count > 0) {
+            int size = res.size();
+            if (size > count) {
+                res = realm.where(Category.class).greaterThanOrEqualTo(Category.Structure.ID, res.get(size - count).getId())
+                        .findAllSorted(Category.Structure.ID, Sort.ASCENDING);
+            }
+        }
+        return res;
+    }
+
     /** 包含账单最多的类别 */
     @Override
     public Category getDefaultCategory() {
@@ -79,5 +95,11 @@ public class CategoryDaoImpl implements CategoryDao {
         return true;
     }
 
-
+    @Override
+    public void updateCategory(Category input) {
+        Realm realm = RealmDelegate.getInstance();
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(input);
+        realm.commitTransaction();
+    }
 }

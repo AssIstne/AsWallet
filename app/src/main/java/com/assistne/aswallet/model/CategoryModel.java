@@ -14,7 +14,7 @@ public class CategoryModel implements Parcelable {
     private String name;
     private int type;
     private boolean isActivate;
-    private int iconRes;
+    private int iconType;
 
     public long getId() {
         return id;
@@ -49,11 +49,20 @@ public class CategoryModel implements Parcelable {
     }
 
     public int getIconRes() {
-        return iconRes;
+        return ModelTool.convertIconType(iconType);
     }
 
-    public void setIconRes(int iconRes) {
-        this.iconRes = iconRes;
+    public int getIconType() {
+        return iconType;
+    }
+
+    public void setIconType(int iconType) {
+        this.iconType = iconType;
+    }
+
+    /** 是否可修改, 默认的类别不能删减 */
+    public boolean isEditable() {
+        return id > 9;
     }
 
     @Override
@@ -62,6 +71,7 @@ public class CategoryModel implements Parcelable {
                 "\n\tid   :" + id +
                 "\n\tname :" + name +
                 "\n\tact  :" + isActivate +
+                "\n\teditable  :" + isEditable() +
                 "\n\ttype :" + (type == Category.TYPE_INCOME ? "income" : "expense");
     }
 
@@ -77,7 +87,7 @@ public class CategoryModel implements Parcelable {
         dest.writeString(this.name);
         dest.writeInt(this.type);
         dest.writeByte(this.isActivate ? (byte) 1 : (byte) 0);
-        dest.writeInt(this.iconRes);
+        dest.writeInt(this.iconType);
     }
 
     public CategoryModel() {
@@ -88,7 +98,7 @@ public class CategoryModel implements Parcelable {
         this.name = in.readString();
         this.type = in.readInt();
         this.isActivate = in.readByte() != 0;
-        this.iconRes = in.readInt();
+        this.iconType = in.readInt();
     }
 
     public static final Creator<CategoryModel> CREATOR = new Creator<CategoryModel>() {
