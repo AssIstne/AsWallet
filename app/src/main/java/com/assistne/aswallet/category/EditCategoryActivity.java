@@ -1,22 +1,31 @@
 package com.assistne.aswallet.category;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.assistne.aswallet.R;
 import com.assistne.aswallet.component.BaseActivity;
+import com.assistne.aswallet.database.PrimaryKeyFactory;
+import com.assistne.aswallet.database.bean.Category;
 import com.assistne.aswallet.model.CategoryModel;
+import com.assistne.aswallet.tools.DensityTool;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.List;
 
@@ -30,12 +39,14 @@ import butterknife.ButterKnife;
 public class EditCategoryActivity extends BaseActivity implements EditCatMvp.View {
 
     @Bind(R.id.edit_category_span_container) CoordinatorLayout mContainer;
-    @Bind(R.id.edit_category_btn_fab) FloatingActionButton mFAbtn;
     @Bind(R.id.edit_category_rcv) RecyclerView mRecyclerView;
     @Bind(R.id.toolbar) Toolbar mToolbar;
+    @Bind(R.id.edit_category_span_add) ViewGroup mAddSpan;
+    @Bind(R.id.edit_category_edt_name) MaterialEditText mNameEdt;
 
     private EditCatMvp.Presenter mPresenter;
     private CategoryAdapter mAdapter;
+    private boolean mIsAddingCat;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,13 +57,6 @@ public class EditCategoryActivity extends BaseActivity implements EditCatMvp.Vie
         mPresenter = new EditCatPresenter(this);
         initToolbar();
         initRecyclerView();
-
-        mFAbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.deleteCategory(-1, -1);
-            }
-        });
     }
 
     private void initRecyclerView() {
@@ -60,6 +64,7 @@ public class EditCategoryActivity extends BaseActivity implements EditCatMvp.Vie
         mAdapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v) {
+                hideSoftKeyBoard();
                 CategoryAdapter.Holder viewHolder = (CategoryAdapter.Holder)mRecyclerView.getChildViewHolder(v);
                 CheckBox checkBox = viewHolder.selectCbx;
                 checkBox.setChecked(!checkBox.isChecked());
@@ -67,7 +72,9 @@ public class EditCategoryActivity extends BaseActivity implements EditCatMvp.Vie
 
             @Override
             public boolean onLongClick(View v) {
+                hideSoftKeyBoard();
                 if (!mAdapter.isEditing()) {
+                    hideAddSpan();
                     enterEditMode();
                     return true;
                 }
@@ -79,7 +86,7 @@ public class EditCategoryActivity extends BaseActivity implements EditCatMvp.Vie
     }
 
     private void initToolbar() {
-        setSupportActionBar(mToolbar);
+        mToolbar.inflateMenu(R.menu.edit_cat_toolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,16 +96,30 @@ public class EditCategoryActivity extends BaseActivity implements EditCatMvp.Vie
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.edit_category_menu_delete) {
-                    if (mAdapter.hasSelected()) {
-                        // TODO: 16/6/16 删除已经关联Category会有问题, 暂时不要从数据库删除
-                        mPresenter.softDeleteCategory(mAdapter.getSelectedList());
-                    } else {
-                        Toast.makeText(EditCategoryActivity.this, R.string.alert_cat_select_nothing, Toast.LENGTH_SHORT).show();
-                    }
-                    return true;
+                switch (item.getItemId()) {
+                    case R.id.edit_category_menu_delete:
+                        if (mAdapter.hasSelected()) {
+                            // TODO: 16/6/16 删除已经关联Category会有问题, 暂时不要从数据库删除
+                            mPresenter.softDeleteCategory(mAdapter.getSelectedList());
+                        } else {
+                            Toast.makeText(EditCategoryActivity.this, R.string.alert_cat_select_nothing, Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    case R.id.edit_category_menu_add:
+                        exitEditMode();
+                        showAddSpan();
+                        return true;
+                    case R.id.edit_category_menu_done:
+                        int nameLength = mNameEdt.getText().length();
+                        if (nameLength > 0 && nameLength <= 10) {
+                            mPresenter.addOrUpdateCategory(getCategoryModel());
+                        } else {
+                            Toast.makeText(EditCategoryActivity.this, R.string.alert_cat_name_length_illegal, Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    default:
+                        return false;
                 }
-                return false;
             }
         });
     }
@@ -123,7 +144,10 @@ public class EditCategoryActivity extends BaseActivity implements EditCatMvp.Vie
 
     @Override
     public void insertCategory(CategoryModel categoryModel) {
-
+        mAdapter.insert(0, categoryModel);
+        mRecyclerView.scrollToPosition(0);
+        Snackbar.make(mContainer, R.string.msg_success_add_cat, Snackbar.LENGTH_SHORT).show();
+        mNameEdt.setText("");
     }
 
     @Override
@@ -135,20 +159,80 @@ public class EditCategoryActivity extends BaseActivity implements EditCatMvp.Vie
 
     @Override
     public void onBackPressed() {
-        if (mAdapter.isEditing()) {
+        if (mAdapter.isEditing() || mIsAddingCat) {
             exitEditMode();
+            hideAddSpan();
         } else {
             super.onBackPressed();
         }
     }
 
     private void exitEditMode() {
-        mToolbar.getMenu().clear();
-        mAdapter.exitEditMode();
+        if (mAdapter.isEditing()) {
+            mToolbar.getMenu().clear();
+            mToolbar.inflateMenu(R.menu.edit_cat_toolbar);
+            mAdapter.exitEditMode();
+        }
     }
 
     private void enterEditMode() {
-        mAdapter.enterEditMode();
-        mToolbar.inflateMenu(R.menu.edit_cat_toolbar);
+        if (!mAdapter.isEditing()) {
+            mAdapter.enterEditMode();
+            mToolbar.getMenu().clear();
+            mToolbar.inflateMenu(R.menu.edit_cat_toolbar_delete);
+        }
+    }
+
+    private void showAddSpan() {
+        if (!mIsAddingCat) {
+            mIsAddingCat = true;
+            mAddSpan.setAlpha(0f);
+            mAddSpan.setVisibility(View.VISIBLE);
+            AnimatorSet set = new AnimatorSet();
+            Animator revealAni = ViewAnimationUtils.createCircularReveal(
+                    mAddSpan, mAddSpan.getWidth()/2, mAddSpan.getHeight()/2,
+                    0, mAddSpan.getWidth()/2);
+            Animator alpha = ObjectAnimator.ofFloat(mAddSpan, "alpha", 0, 1);
+            Animator translation = ObjectAnimator.ofFloat(mRecyclerView, "translationY",
+                    0, mAddSpan.getHeight() + DensityTool.dpToPx(16));
+            set.playTogether(revealAni, alpha, translation);
+            set.start();
+
+            mToolbar.getMenu().clear();
+            mToolbar.inflateMenu(R.menu.edit_cat_toolbar_done);
+        }
+    }
+
+    private void hideAddSpan() {
+        if (mIsAddingCat) {
+            mIsAddingCat = false;
+            AnimatorSet set = new AnimatorSet();
+            Animator revealAni = ViewAnimationUtils.createCircularReveal(
+                    mAddSpan, mAddSpan.getWidth()/2, mAddSpan.getHeight()/2,
+                    mAddSpan.getWidth()/2, 0);
+            revealAni.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mAddSpan.setVisibility(View.INVISIBLE);
+                }
+            });
+            Animator translation = ObjectAnimator.ofFloat(mRecyclerView, "translationY",
+                    0);
+            set.playTogether(revealAni, translation);
+            set.start();
+            mToolbar.getMenu().clear();
+            mToolbar.inflateMenu(R.menu.edit_cat_toolbar);
+        }
+    }
+
+    private CategoryModel getCategoryModel() {
+        CategoryModel model = new CategoryModel();
+        // 分配ID, 否则覆盖
+        model.setId(PrimaryKeyFactory.nextCategoryKey());
+        model.setName(mNameEdt.getText().toString());
+        model.setActivate(true);
+        model.setType(Category.TYPE_EXPENSE);
+        model.setIconType(Category.Type.OTHER);
+        return model;
     }
 }
