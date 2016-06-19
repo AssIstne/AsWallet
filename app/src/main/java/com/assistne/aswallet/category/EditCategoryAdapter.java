@@ -25,18 +25,18 @@ import butterknife.ButterKnife;
 /**
  * Created by assistne on 16/3/22.
  */
-public class CategoryAdapter extends RecyclerView.Adapter implements
+public class EditCategoryAdapter extends RecyclerView.Adapter implements
         View.OnClickListener, View.OnLongClickListener, CompoundButton.OnCheckedChangeListener {
     private List<CategoryModel> mData;
     private OnItemClickListener mListener;
     private boolean mIsEditing;
     private SparseIntArray mSelectArray;
 
-    public CategoryAdapter() {
+    public EditCategoryAdapter() {
         this(new ArrayList<CategoryModel>());
     }
 
-    public CategoryAdapter(List<CategoryModel> data) {
+    public EditCategoryAdapter(List<CategoryModel> data) {
         mData = data == null ? new ArrayList<CategoryModel>() : data;
         mSelectArray = new SparseIntArray();
     }
@@ -114,7 +114,7 @@ public class CategoryAdapter extends RecyclerView.Adapter implements
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         int position = (int) buttonView.getTag();
-        if (position > 0 && position < mData.size()) {
+        if (position >= 0 && position < mData.size()) {
             if (isChecked) {
                 mSelectArray.append(position, position);
             } else {
@@ -131,9 +131,9 @@ public class CategoryAdapter extends RecyclerView.Adapter implements
         public Holder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(CategoryAdapter.this);
-            itemView.setOnLongClickListener(CategoryAdapter.this);
-            selectCbx.setOnCheckedChangeListener(CategoryAdapter.this);
+            itemView.setOnClickListener(EditCategoryAdapter.this);
+            itemView.setOnLongClickListener(EditCategoryAdapter.this);
+            selectCbx.setOnCheckedChangeListener(EditCategoryAdapter.this);
         }
     }
 
@@ -176,7 +176,7 @@ public class CategoryAdapter extends RecyclerView.Adapter implements
         if (mSelectArray.size() > 0) {
             for (int i = 0; i < mSelectArray.size(); i++) {
                 int position = mSelectArray.valueAt(i);
-                if (position > 0 && position < mData.size()) {
+                if (position >= 0 && position < mData.size()) {
                     list.append(position, mData.get(position).getId());
                 }
             }

@@ -45,7 +45,7 @@ public class EditCategoryActivity extends BaseActivity implements EditCatMvp.Vie
     @Bind(R.id.edit_category_edt_name) MaterialEditText mNameEdt;
 
     private EditCatMvp.Presenter mPresenter;
-    private CategoryAdapter mAdapter;
+    private EditCategoryAdapter mAdapter;
     private boolean mIsAddingCat;
 
     @Override
@@ -60,12 +60,12 @@ public class EditCategoryActivity extends BaseActivity implements EditCatMvp.Vie
     }
 
     private void initRecyclerView() {
-        mAdapter = new CategoryAdapter();
-        mAdapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
+        mAdapter = new EditCategoryAdapter();
+        mAdapter.setOnItemClickListener(new EditCategoryAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v) {
                 hideSoftKeyBoard();
-                CategoryAdapter.Holder viewHolder = (CategoryAdapter.Holder)mRecyclerView.getChildViewHolder(v);
+                EditCategoryAdapter.Holder viewHolder = (EditCategoryAdapter.Holder)mRecyclerView.getChildViewHolder(v);
                 CheckBox checkBox = viewHolder.selectCbx;
                 checkBox.setChecked(!checkBox.isChecked());
             }
@@ -145,7 +145,9 @@ public class EditCategoryActivity extends BaseActivity implements EditCatMvp.Vie
     @Override
     public void insertCategory(CategoryModel categoryModel) {
         mAdapter.insert(0, categoryModel);
-        mRecyclerView.scrollToPosition(0);
+        if (((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition() == 0) {
+            mRecyclerView.scrollToPosition(0);
+        }
         Snackbar.make(mContainer, R.string.msg_success_add_cat, Snackbar.LENGTH_SHORT).show();
         mNameEdt.setText("");
     }
@@ -218,7 +220,7 @@ public class EditCategoryActivity extends BaseActivity implements EditCatMvp.Vie
             });
             Animator translation = ObjectAnimator.ofFloat(mRecyclerView, "translationY",
                     0);
-            set.playTogether(revealAni, translation);
+            set.playSequentially(revealAni, translation);
             set.start();
             mToolbar.getMenu().clear();
             mToolbar.inflateMenu(R.menu.edit_cat_toolbar);

@@ -1,6 +1,7 @@
 package com.assistne.aswallet.database.bean;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * 1. 当没有描述的时候代替描述
@@ -16,13 +17,15 @@ public class Tag extends RealmObject {
         String CAT = "category";
         String ACTIVATE = "isActivate";
         String COUNT = "count";
+        String SOFT_DELETE = "softDelete";
     }
-
+    @PrimaryKey
     private long id;
     private String name;
     private Category category;
     private boolean isActivate;
     private long count;
+    private boolean softDelete;
 
     public long getId() {
         return id;
@@ -66,6 +69,14 @@ public class Tag extends RealmObject {
 
     public void increaseCount() {
         this.count += 1;
+    }
+
+    public boolean isSoftDelete() {
+        return softDelete;
+    }
+
+    public void setSoftDelete(boolean softDelete) {
+        this.softDelete = softDelete;
     }
 
     @Override

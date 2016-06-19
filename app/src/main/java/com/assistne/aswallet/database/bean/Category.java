@@ -41,15 +41,6 @@ public class Category extends RealmObject {
     private boolean isActivate;
     private int iconType;
     private long count;
-
-    public boolean isSoftDelete() {
-        return softDelete;
-    }
-
-    public void setSoftDelete(boolean softDelete) {
-        this.softDelete = softDelete;
-    }
-
     private boolean softDelete;
 
     public Category(){
@@ -105,6 +96,14 @@ public class Category extends RealmObject {
 
     public void increaseCount() {
         this.count += 1;
+    }
+
+    public boolean isSoftDelete() {
+        return softDelete;
+    }
+
+    public void setSoftDelete(boolean softDelete) {
+        this.softDelete = softDelete;
     }
 
     @Override

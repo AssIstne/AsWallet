@@ -2,6 +2,7 @@ package com.assistne.aswallet.database.dao;
 
 import com.assistne.aswallet.database.RealmDelegate;
 import com.assistne.aswallet.database.bean.Category;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -97,6 +98,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
     @Override
     public void updateCategory(Category input) {
+        Logger.d(input.toString());
         Realm realm = RealmDelegate.getInstance();
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(input);

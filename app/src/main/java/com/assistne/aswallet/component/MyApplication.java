@@ -29,7 +29,6 @@ public class MyApplication extends Application {
         /** Realm暂时不支持自增主键, 需要自己弄id */
         Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this).name("AsWallet.realm").build());
         Realm realm = Realm.getDefaultInstance();
-        PrimaryKeyFactory.getInstance().initialize(realm);
         Category category;
         Category foodCat = null;
         Category trafficCat = null;
@@ -100,7 +99,8 @@ public class MyApplication extends Application {
             category.setActivate(true);
             realm.commitTransaction();
         }
-
+        /** Category是手动给ID赋值, 所以在创建完Category之后才初始化主键生成器 */
+        PrimaryKeyFactory.getInstance().initialize(realm);
         Tag tag;
         if (realm.where(Tag.class).count() == 0) {
             realm.beginTransaction();
