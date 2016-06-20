@@ -68,6 +68,14 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
+    public List<Tag> getTagListByCatId(long catId) {
+        Realm realm = RealmDelegate.getInstance();
+        return realm.where(Tag.class)
+                .equalTo(Tag.Structure.CAT + "." + Category.Structure.ID, catId)
+                .findAllSorted(Tag.Structure.ID, Sort.ASCENDING);
+    }
+
+    @Override
     public void updateTag(Tag tag) {
         Realm realm = RealmDelegate.getInstance();
         realm.beginTransaction();

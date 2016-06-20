@@ -1,23 +1,14 @@
 package com.assistne.aswallet.model;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 /**
  * Created by assistne on 16/6/6.
  */
-public class TagModel implements Parcelable {
-    private long id;
+public class TagModel extends Model {
     private String name;
     private long categoryId;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
+    private boolean isActive;
 
     public String getName() {
         return name;
@@ -35,6 +26,13 @@ public class TagModel implements Parcelable {
         this.categoryId = categoryId;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 
     @Override
     public String toString() {
@@ -44,6 +42,11 @@ public class TagModel implements Parcelable {
                 "\n\tcatId :" + categoryId;
     }
 
+
+    public TagModel() {
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -51,21 +54,20 @@ public class TagModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(this.id);
         dest.writeString(this.name);
         dest.writeLong(this.categoryId);
-    }
-
-    public TagModel() {
+        dest.writeByte(this.isActive ? (byte) 1 : (byte) 0);
+        dest.writeLong(this.id);
     }
 
     protected TagModel(Parcel in) {
-        this.id = in.readLong();
         this.name = in.readString();
         this.categoryId = in.readLong();
+        this.isActive = in.readByte() != 0;
+        this.id = in.readLong();
     }
 
-    public static final Parcelable.Creator<TagModel> CREATOR = new Parcelable.Creator<TagModel>() {
+    public static final Creator<TagModel> CREATOR = new Creator<TagModel>() {
         @Override
         public TagModel createFromParcel(Parcel source) {
             return new TagModel(source);

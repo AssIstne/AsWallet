@@ -4,7 +4,10 @@
     <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/green_700</item>
         <item name="colorPrimaryDark">@color/light_green_900</item>
+        <item name="colorSwitchThumbNormal">@color/grey_50</item>
+        <item name="android:colorControlActivated">@color/teal_500</item>
         <item name="android:windowBackground">@color/grey_50</item>
+        <item name="android:colorForeground">@android:color/black</item>
     </style>
 
     <!-- 通用主题 -->

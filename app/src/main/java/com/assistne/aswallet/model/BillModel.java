@@ -1,7 +1,6 @@
 package com.assistne.aswallet.model;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 import android.text.format.DateFormat;
 
 import com.assistne.aswallet.R;
@@ -14,9 +13,8 @@ import java.util.Date;
  * 提供给Mvp.View展示内容, 赋值依据是{@link Bill}
  * Created by assistne on 16/5/21.
  */
-public class BillModel implements Parcelable{
+public class BillModel extends Model{
 
-    private long id;
     private String description;
     private String categoryName;
     private long categoryId;
@@ -26,14 +24,6 @@ public class BillModel implements Parcelable{
     private Date date;
     private int type;
     private float price;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getDescription() {
         return description;

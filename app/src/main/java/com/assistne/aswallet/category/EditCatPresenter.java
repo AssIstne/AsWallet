@@ -4,6 +4,8 @@ import android.util.SparseLongArray;
 
 import com.assistne.aswallet.database.dao.CategoryDao;
 import com.assistne.aswallet.database.dao.CategoryDaoImpl;
+import com.assistne.aswallet.database.dao.TagDao;
+import com.assistne.aswallet.database.dao.TagDaoImpl;
 import com.assistne.aswallet.model.CategoryModel;
 import com.assistne.aswallet.model.ModelTool;
 
@@ -17,10 +19,12 @@ public class EditCatPresenter implements EditCatMvp.Presenter {
 
     private EditCatMvp.View mView;
     private CategoryDao mCatDao;
+    private TagDao mTagDao;
 
     public EditCatPresenter(EditCatMvp.View view) {
         mView = view;
         mCatDao = new CategoryDaoImpl();
+        mTagDao = new TagDaoImpl();
     }
 
     @Override
@@ -48,6 +52,11 @@ public class EditCatPresenter implements EditCatMvp.Presenter {
             }
         }
         mView.removeCategory(resArray);
+    }
+
+    @Override
+    public void requestShowTags(long catId, int position) {
+        mView.showTagList(ModelTool.convertTagList(mTagDao.getTagListByCatId(catId)), position);
     }
 
     @Override

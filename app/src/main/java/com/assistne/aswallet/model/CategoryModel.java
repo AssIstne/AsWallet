@@ -1,7 +1,6 @@
 package com.assistne.aswallet.model;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.assistne.aswallet.database.bean.Category;
 
@@ -9,20 +8,11 @@ import com.assistne.aswallet.database.bean.Category;
  * 提供给Mvp.View展示内容, 赋值依据是{@link Category}
  * Created by assistne on 16/5/21.
  */
-public class CategoryModel implements Parcelable {
-    private long id;
+public class CategoryModel extends Model {
     private String name;
     private int type;
     private boolean isActivate;
     private int iconType;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

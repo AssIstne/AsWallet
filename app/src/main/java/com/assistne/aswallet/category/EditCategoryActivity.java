@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.assistne.aswallet.R;
@@ -24,6 +25,7 @@ import com.assistne.aswallet.component.BaseActivity;
 import com.assistne.aswallet.database.PrimaryKeyFactory;
 import com.assistne.aswallet.database.bean.Category;
 import com.assistne.aswallet.model.CategoryModel;
+import com.assistne.aswallet.model.TagModel;
 import com.assistne.aswallet.tools.DensityTool;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -65,9 +67,16 @@ public class EditCategoryActivity extends BaseActivity implements EditCatMvp.Vie
             @Override
             public void onClick(View v) {
                 hideSoftKeyBoard();
-                EditCategoryAdapter.Holder viewHolder = (EditCategoryAdapter.Holder)mRecyclerView.getChildViewHolder(v);
-                CheckBox checkBox = viewHolder.selectCbx;
-                checkBox.setChecked(!checkBox.isChecked());
+                RecyclerView.ViewHolder viewHolder = mRecyclerView.getChildViewHolder(v);
+                if (viewHolder instanceof EditCategoryAdapter.CategoryHolder) {
+                    EditCategoryAdapter.CategoryHolder categoryHolder = (EditCategoryAdapter.CategoryHolder)viewHolder;
+                    if (mAdapter.isEditing()) {
+                        CheckBox checkBox = categoryHolder.selectCbx;
+                        checkBox.setChecked(!checkBox.isChecked());
+                    } else {
+                        mPresenter.requestShowTags(categoryHolder.catId, (int) categoryHolder.selectCbx.getTag());
+                    }
+                }
             }
 
             @Override
@@ -79,6 +88,11 @@ public class EditCategoryActivity extends BaseActivity implements EditCatMvp.Vie
                     return true;
                 }
                 return false;
+            }
+
+            @Override
+            public void onTagSwitchChange(CompoundButton view, boolean isChecked) {
+                // TODO: 16/6/20 修改TAG的isActive状态
             }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -157,6 +171,11 @@ public class EditCategoryActivity extends BaseActivity implements EditCatMvp.Vie
         mAdapter.remove(positionList);
         exitEditMode();
         Snackbar.make(mContainer, R.string.msg_success_delete_cat, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showTagList(List<TagModel> tagList, int position) {
+        mAdapter.insertList(position, tagList);
     }
 
     @Override

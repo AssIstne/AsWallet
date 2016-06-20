@@ -17,6 +17,8 @@ public interface TagDao {
 
     List<Tag> getExpenseTagList(int count);
 
+    List<Tag> getTagListByCatId(long catId);
+
     void updateTag(Tag tag);
     Tag increaseTag(long id);
 }

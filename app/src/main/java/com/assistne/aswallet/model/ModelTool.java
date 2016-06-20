@@ -97,6 +97,7 @@ public class ModelTool {
         PreCondition.checkNotNull(category);
         model.setCategoryId(category.getId());
         model.setName(tag.getName());
+        model.setActive(tag.isActivate());
         return model;
     }
 

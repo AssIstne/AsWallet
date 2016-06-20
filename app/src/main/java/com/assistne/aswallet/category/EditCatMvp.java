@@ -5,6 +5,7 @@ import android.util.SparseLongArray;
 
 import com.assistne.aswallet.component.BaseMvp;
 import com.assistne.aswallet.model.CategoryModel;
+import com.assistne.aswallet.model.TagModel;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public interface EditCatMvp {
         void showCategoryList(List<CategoryModel> catList);
         void insertCategory(CategoryModel categoryModel);
         void removeCategory(@NonNull List<Integer> positionList);
+        void showTagList(List<TagModel> tagList, int position);
     }
 
     interface Presenter extends BaseMvp.Presenter {
@@ -25,5 +27,6 @@ public interface EditCatMvp {
          * 批量删除类别
          * @param array key是position, value是CategoryId*/
         void softDeleteCategory(SparseLongArray array);
+        void requestShowTags(long catId, int position);
     }
 }
